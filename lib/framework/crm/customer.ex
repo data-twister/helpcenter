@@ -184,7 +184,7 @@ defmodule Framework.CRM.Customer do
   end
 
   relationships do
-    has_many :orders, Framework.Orders.Order
+   # has_many :orders, Framework.Orders.Order
   end
 
   calculations do
