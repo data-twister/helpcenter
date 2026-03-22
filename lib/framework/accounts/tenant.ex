@@ -52,6 +52,10 @@ defmodule Framework.Accounts.Tenant do
     end
   end
 
+#  preparations do
+#    prepare build(load: [:settings])
+#  end
+
   attributes do
     uuid_v7_primary_key :id
 
@@ -73,6 +77,9 @@ defmodule Framework.Accounts.Tenant do
   end
 
   relationships do
+
+#    has_one :settings, Framework.Settings.Setting
+
     belongs_to :owner, Framework.Accounts.User do
       source_attribute :owner_user_id
     end

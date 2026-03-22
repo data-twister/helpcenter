@@ -1,15 +1,13 @@
 defmodule Framework.Settings.Settings do
   @moduledoc false
   use Ash.Resource,
-    otp_app: :craftplan,
+    otp_app: :framework,
     domain: Framework.Settings,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer]
 #    extensions: [AshJsonApi.Resource]
 
-  alias Framework.Accounts.Organization
   alias Framework.Types.EncryptedBinary
-
 #  json_api do
 #    type "settings"
 #
@@ -32,7 +30,7 @@ defmodule Framework.Settings.Settings do
 
     create :init do
       primary? true
-      accept [:organization_id]
+      accept [:tenant_id]
     end
 
     read :get do
@@ -187,7 +185,7 @@ defmodule Framework.Settings.Settings do
     attribute :email_from_address, :string do
       public? true
       allow_nil? false
-      default "noreply@craftplan.app"
+      default "noreply@framework.app"
     end
 
     # Email provider
@@ -296,7 +294,7 @@ defmodule Framework.Settings.Settings do
   end
 
   relationships do
-    belongs_to :organization, Organization do
+    belongs_to :tenant, Tenant do
       allow_nil? true
     end
   end

@@ -1,6 +1,6 @@
 defmodule Framework.Settings do
   @moduledoc false
-  use Ash.Domain,
+  use Ash.Domain
 #    extensions: [AshJsonApi.Domain, AshGraphql.Domain]
 
 #  json_api do

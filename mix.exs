@@ -80,6 +80,7 @@ defmodule Framework.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:waffle, "~> 1.1"},
+      {:cloak_ecto, "~> 1.3"},
       {:ex_aws, "~> 2.5"},
       {:ex_aws_s3, "~> 2.0"},
       {:ex_image_info, "~> 1.0.0"},

@@ -25,8 +25,7 @@ config :ash,
   policies: [no_filter_static_forbidden_reads?: false],
   known_types: [AshMoney.Types.Money],
   custom_types: [
-    money: Money,
-    currency: Craftplan.Types.Currency
+    money: Money
   ]
 
 config :spark,
