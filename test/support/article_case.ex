@@ -1,5 +1,5 @@
 defmodule ArticleCase do
-  alias Helpcenter.KnowledgeBase.Article
+  alias Framework.KnowledgeBase.Article
   import CategoryCase
 
   def get_article(tenant) do
@@ -103,6 +103,6 @@ defmodule ArticleCase do
       }
     ]
 
-    Ash.Seed.seed!(Helpcenter.KnowledgeBase.Article, attrs, tenant: tenant)
+    Ash.Seed.seed!(Framework.KnowledgeBase.Article, attrs, tenant: tenant)
   end
 end

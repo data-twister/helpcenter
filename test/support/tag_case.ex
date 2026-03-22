@@ -1,5 +1,5 @@
 defmodule TagCase do
-  alias Helpcenter.KnowledgeBase.Tag
+  alias Framework.KnowledgeBase.Tag
 
   def get_tags(tenant) do
     case(Ash.read(Tag, tenant: tenant)) do

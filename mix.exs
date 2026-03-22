@@ -1,10 +1,10 @@
 # mix.exs
-defmodule Helpcenter.MixProject do
+defmodule Framework.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :helpcenter,
+      app: :framework,
       version: "0.1.0",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -22,7 +22,7 @@ defmodule Helpcenter.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Helpcenter.Application, []},
+      mod: {Framework.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -43,9 +43,10 @@ defmodule Helpcenter.MixProject do
       {:bcrypt_elixir, "~> 3.0"},
       {:ash_authentication, "~> 4.0"},
       {:ash_authentication_phoenix, "~> 2.0"},
+      {:ash_graphql, "~> 1.0"},
+      {:ash_json_api, "~> 1.0"},
+      {:ash_money, "~> 0.1"},
       {:picosat_elixir, "~> 0.2"},
-      {:distillery, "~> 2.0"},
-      {:edeliver, "~> 1.0"},
       {:ash_phoenix, "~> 2.0"},
       {:ash_postgres, "~> 2.5"},
       {:ash, "~> 3.0"},
@@ -53,10 +54,11 @@ defmodule Helpcenter.MixProject do
       {:phoenix, "~> 1.7.18"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.10"},
+      {:ex_money_sql, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 1.0.0"},
+      {:phoenix_live_view, "~> 1.1"},
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
@@ -75,7 +77,20 @@ defmodule Helpcenter.MixProject do
       {:gettext, "~> 0.26"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:waffle, "~> 1.1"},
+      {:ex_aws, "~> 2.5"},
+      {:ex_aws_s3, "~> 2.0"},
+      {:ex_image_info, "~> 1.0.0"},
+      {:hackney, "~> 1.9"},
+      {:sweet_xml, "~> 0.6"},
+      {:tz, "~> 0.28"},
+      {:nimble_csv, "~> 1.2"},
+      {:icalendar, "~> 1.1"},
+      {:imprintor, "~> 0.5"},
+      {:open_api_spex, "~> 3.16"},
+      {:req, "~> 0.5", only: [:dev, :test]},
+      {:sentry, "~> 12.0.1"}
     ]
   end
 
@@ -92,10 +107,10 @@ defmodule Helpcenter.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ash.setup --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind helpcenter", "esbuild helpcenter"],
+      "assets.build": ["tailwind framework", "esbuild framework"],
       "assets.deploy": [
-        "tailwind helpcenter --minify",
-        "esbuild helpcenter --minify",
+        "tailwind framework --minify",
+        "esbuild framework --minify",
         "phx.digest"
       ],
       "phx.routes": ["phx.routes", "ash_authentication.phoenix.routes"]

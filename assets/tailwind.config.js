@@ -10,8 +10,8 @@ module.exports = {
     "../deps/cinder/lib/**/*.*ex",
     "../deps/ash_authentication_phoenix/**/*.*ex",
     "./js/**/*.js",
-    "../lib/helpcenter_web.ex",
-    "../lib/helpcenter_web/**/*.*ex",
+    "../lib/framework_web.ex",
+    "../lib/framework_web/**/*.*ex",
     "../deps/ash_authentication_phoenix/**/*.*ex"
   ],
   theme: {

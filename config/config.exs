@@ -10,11 +10,11 @@ import Config
 config :cinder, default_theme: "modern"
 config :ash_oban, pro?: false
 
-config :helpcenter, Oban,
+config :framework, Oban,
   engine: Oban.Engines.Basic,
   notifier: Oban.Notifiers.Postgres,
   queues: [default: 10],
-  repo: Helpcenter.Repo,
+  repo: Framework.Repo,
   plugins: [{Oban.Plugins.Cron, []}]
 
 config :ash,
@@ -51,20 +51,20 @@ config :spark,
     "Ash.Domain": [section_order: [:resources, :policies, :authorization, :domain, :execution]]
   ]
 
-config :helpcenter,
-  ecto_repos: [Helpcenter.Repo],
+config :framework,
+  ecto_repos: [Framework.Repo],
   generators: [timestamp_type: :utc_datetime],
-  ash_domains: [Helpcenter.Accounts, Helpcenter.KnowledgeBase]
+  ash_domains: [Framework.Accounts, Framework.KnowledgeBase]
 
 # Configures the endpoint
-config :helpcenter, HelpcenterWeb.Endpoint,
+config :framework, FrameworkWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [html: HelpcenterWeb.ErrorHTML, json: HelpcenterWeb.ErrorJSON],
+    formats: [html: FrameworkWeb.ErrorHTML, json: FrameworkWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: Helpcenter.PubSub,
+  pubsub_server: Framework.PubSub,
   live_view: [signing_salt: "VAJ+bMre"]
 
 # Configures the mailer
@@ -74,12 +74,12 @@ config :helpcenter, HelpcenterWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :helpcenter, Helpcenter.Mailer, adapter: Swoosh.Adapters.Local
+config :framework, Framework.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",
-  helpcenter: [
+  framework: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
@@ -89,7 +89,7 @@ config :esbuild,
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "3.4.3",
-  helpcenter: [
+  framework: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.css

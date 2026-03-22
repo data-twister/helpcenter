@@ -1,5 +1,5 @@
 defmodule CategoryCase do
-  alias Helpcenter.KnowledgeBase.Category
+  alias Framework.KnowledgeBase.Category
 
   def get_category(tenant) do
     case Ash.read_first(Category, tenant: tenant, authorize?: false) do

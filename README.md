@@ -1,4 +1,4 @@
-# Helpcenter
+# Framework
 
 To start your Phoenix server:
 

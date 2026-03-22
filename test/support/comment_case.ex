@@ -1,5 +1,5 @@
 defmodule CommentCase do
-  alias Helpcenter.KnowledgeBase.Comment
+  alias Framework.KnowledgeBase.Comment
   import ArticleCase
 
   def get_comment(tenant) do
@@ -57,7 +57,7 @@ defmodule CommentCase do
         article_id: article.id
       },
       %{
-        content: "Great overview of compliance features. Extremely useful for my team.",
+        content: "Great overview of compliance features. Extremely useful for my tenant.",
         article_id: article.id
       }
     ]

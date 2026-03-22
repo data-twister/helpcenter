@@ -1,0 +1,150 @@
+<.flash_group flash={@flash} />
+<!-- Header / Hero -->
+<header class="bg-gray-900 px-6 py-6 text-white">
+  <div class="mx-auto max-w-7xl">
+    <!-- Top row: Logo -->
+    <div class="flex items-center justify-between">
+      <!-- Logo / Title -->
+      <div class="flex items-center space-x-2">
+        <!-- “Zippiker” in golden yellow -->
+        <div class="text-3xl font-bold text-yellow-500">Zippiker</div>
+      </div>
+
+      <%!-- ADD THIS SECTION FOR ASH AUTHENTICATION --%>
+      <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+        <%!-- Only show this div if the user is logged in --%>
+        <div :if={@current_user}>
+          <span class="px-3 py-2 text-sm font-medium text-yellow-500 rounded-md">
+            {@current_user.email}
+          </span>
+
+          <%!-- Display sign out button if the user is logged in --%>
+          <a
+            href="/sign-out"
+            class="rounded-lg bg-zinc-100 px-2 py-1 text-[0.8125rem] font-semibold leading-6 text-zinc-900 hover:bg-zinc-200/80 active:text-zinc-900/70"
+          >
+            Sign out
+          </a>
+        </div>
+
+        <%!-- Show this block if user is not logged in --%>
+        <a
+          :if={@current_user |> is_nil()}
+          href="/sign-in"
+          class="rounded-lg bg-zinc-100 px-2 py-1 text-[0.8125rem] font-semibold leading-6 text-zinc-900 hover:bg-zinc-200/80 active:text-zinc-900/70"
+        >
+          Sign In
+        </a>
+      </div>
+      <%!-- END OF THE AUTHENTICATION SECTION --%>
+    </div>
+    
+<!-- Subtitle (reduced size and goldish yellow) -->
+    <div class="mt-5 text-center">
+      <h1 class="text-xl font-medium text-yellow-400">
+        Advice and answers from the Zippiker Tenant
+      </h1>
+    </div>
+    
+<!-- Search Bar (centered) -->
+        <!-- Search Bar (centered) with icons -->
+    <div class="mt-5 flex justify-center">
+      <!-- Container for relative positioning -->
+      <div class="relative w-full max-w-xl">
+        <label for="search" class="sr-only">Search for articles</label>
+        
+<!-- Search Icon (left) -->
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+          <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M8 4a6 6 0 014.472 10.03l3.316 
+                     3.317a1 1 0 01-1.414 1.414l-3.316-3.316A6 
+                     6 0 118 4zm0 2a4 4 0 100 8 4 4 0 
+                     000-8z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </span>
+        
+<!-- Search Input -->
+        <input
+          type="text"
+          id="search"
+          placeholder="Search for articles..."
+          class="w-full rounded bg-gray-800 py-2 pl-10 pr-10 text-gray-300 focus:bg-gray-200 focus:text-gray-900 focus:outline-none focus:ring-1 focus:ring-yellow-500"
+        />
+        
+<!-- Clear Button (right), hidden by default) -->
+        <button
+          type="button"
+          id="clearBtn"
+          class="absolute inset-y-0 right-0 hidden items-center pr-3 text-gray-400 hover:text-gray-300 focus:outline-none"
+        >
+          <!-- Clear (X) Icon -->
+          <svg class="h-5 w-5 text-yellow-100" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 
+                     0L10 8.586l4.293-4.293a1 1 
+                     0 011.414 1.414L11.414 10l4.293 
+                     4.293a1 1 0 01-1.414 1.414L10 
+                     11.414l-4.293 4.293a1 1 0 
+                     01-1.414-1.414L8.586 10 4.293 
+                     5.707a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content: Card Grid -->
+<main class="mx-auto max-w-7xl py-10">
+  <!-- Make the grid 3 columns on medium screens and above -->
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+    <%!-- List category and display their count --%>
+    <a
+      :for={category <- @categories}
+      href="#"
+      class="block rounded-md hover:border p-5 shadow transition hover:shadow-md"
+    >
+      <div class="mb-3 flex items-center">
+        <svg class="h-6 w-6 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M4 3h12v2H4V3zm0 3h12v2H4V6zm0 
+            3h10v2H4V9zm0 3h8v2H4v-2z" />
+        </svg>
+        <h2 class="ml-2 text-lg font-medium text-gray-800">{category.name}</h2>
+      </div>
+      <p class="text-sm text-gray-600">{category.description}</p>
+
+      <%!-- Count articles under each category  --%>
+      <p class="mt-2 text-xs text-gray-500">{category.article_count} articles</p>
+    </a>
+  </div>
+</main>
+
+<script>
+  // Grab the search input and the clear button
+  const searchInput = document.getElementById('search');
+  const clearBtn = document.getElementById('clearBtn');
+
+  // Toggle clear button visibility based on input text
+  searchInput.addEventListener('input', () => {
+    if (searchInput.value.trim() !== '') {
+      clearBtn.classList.remove('hidden');
+    } else {
+      clearBtn.classList.add('hidden');
+    }
+  });
+
+  // Clear the input field on button click
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    clearBtn.classList.add('hidden');
+    // Optional: return focus to the input
+    searchInput.focus();
+  });
+</script>
