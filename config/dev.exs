@@ -27,7 +27,10 @@ config :framework, FrameworkWeb.Endpoint,
   secret_key_base: "3NAos5punonJYbJepPjFoXigvBPwJcBEu+5WBt3O1E3pLegeVRBGiJAJAIko6LGM",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:framework, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:framework, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:user, ~w(--sourcemap=inline --watch)]},
+    esbuild: {Esbuild, :install_and_run, [:service_worker, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:framework, ~w(--watch)]},
+    tailwind_user: {Tailwind, :install_and_run, [:user, ~w(--watch)]}
   ]
 
 # ## SSL Support
@@ -96,3 +99,36 @@ config :framework, Framework.Mailer,
   port: System.get_env("MAILTRAP_PORT", "2525"),
   retries: System.get_env("MAILTRAP_RETRIES", "2"),
   no_mx_lookups: System.get_env("MAILTRAP_NO_MX_LOOKUPS", "false")
+
+config :ex_aws,
+       json_codec: Jason,
+       access_key_id: "minio",
+       secret_access_key: "minio123",
+       region: "us-east-1",
+       s3: [
+         scheme: "http://",
+         host: "localhost",
+         port: 9000,
+         region: "us-east-1"
+       ]
+
+config :logger, :console, format: "[$level] $message\n"
+
+config :phoenix, :plug_init_mode, :runtime
+# If desired, both `http:` and `https:` keys can be
+config :phoenix, :stacktrace_depth, 20
+
+config :phoenix_live_view,
+       debug_heex_annotations: true,
+         # Enable helpful, but potentially expensive runtime checks
+       enable_expensive_runtime_checks: true
+
+config :sentry,
+       dsn: System.get_env("SENTRY_DSN") || nil
+
+config :swoosh, :api_client, false
+
+config :waffle,
+       storage: Waffle.Storage.S3,
+       bucket: "framework",
+       asset_host: "http://localhost:9000/framework"

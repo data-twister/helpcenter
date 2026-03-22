@@ -1,0 +1,68 @@
+defmodule Framework.Orders.OrderItemLot do
+  @moduledoc false
+  use Ash.Resource,
+    otp_app: :framework,
+    domain: Framework.Orders,
+    data_layer: AshPostgres.DataLayer,
+    authorizers: [Ash.Policy.Authorizer]
+
+  postgres do
+    table "orders_item_lots"
+    repo Framework.Repo
+  end
+
+  actions do
+    defaults [
+      :read,
+      :destroy,
+      create: [:order_item_id, :lot_id, :quantity_used]
+    ]
+  end
+
+  policies do
+    policy action_type(:read) do
+      authorize_if always()
+    end
+
+    policy action_type([:create, :read, :update, :destroy]) do
+      forbid_unless Framework.Accounts.Checks.ActorBelongsToTenant
+    end
+
+    policy action_type([:create, :update, :destroy]) do
+      authorize_if expr(^actor(:role) in [:staff, :admin])
+    end
+  end
+
+  preparations do
+    prepare Framework.Preparations.SetTenant
+  end
+
+  changes do
+    change Framework.Changes.SetTenant
+  end
+
+  multitenancy do
+    strategy :context
+  end
+
+  attributes do
+    uuid_primary_key :id
+
+    attribute :quantity_used, :decimal do
+      allow_nil? false
+      default 0
+    end
+
+    timestamps()
+  end
+
+  relationships do
+    belongs_to :order_item, Framework.Orders.OrderItem do
+      allow_nil? false
+    end
+
+    belongs_to :lot, Framework.Inventory.Lot do
+      allow_nil? false
+    end
+  end
+end

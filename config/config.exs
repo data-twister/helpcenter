@@ -22,7 +22,12 @@ config :ash,
   include_embedded_source_by_default?: false,
   show_keysets_for_all_actions?: false,
   default_page_type: :keyset,
-  policies: [no_filter_static_forbidden_reads?: false]
+  policies: [no_filter_static_forbidden_reads?: false],
+  known_types: [AshMoney.Types.Money],
+  custom_types: [
+    money: Money,
+    currency: Craftplan.Types.Currency
+  ]
 
 config :spark,
   formatter: [
@@ -84,6 +89,17 @@ config :esbuild,
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ],
+  user: [
+    args:
+      ~w(js/user.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ],
+  service_worker: [
+    args: ~w(js/service_worker.js --bundle --target=es2016 --outdir=../priv/static/assets),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
   ]
 
 # Configure tailwind (the version is required)
@@ -96,6 +112,13 @@ config :tailwind,
       --output=../priv/static/assets/app.css
     ),
     cd: Path.expand("../assets", __DIR__)
+  ], user: [
+    args: ~w(
+      --config=tailwind.config.js
+      --input=css/user.css
+      --output=../priv/static/assets/user.css
+    ),
+    cd: Path.expand("../assets", __DIR__)
   ]
 
 # Configures Elixir's Logger
@@ -105,6 +128,28 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :ex_cldr, default_backend: Framework.Cldr
+
+config :elixir, :time_zone_database, Tz.TimeZoneDatabase
+
+config :sentry,
+       dsn: "https://examplePublicKey@o0.ingest.sentry.io/0",
+       environment_name: Mix.env(),
+       enable_source_code_context: true,
+       root_source_code_paths: [File.cwd!()],
+       integrations: [
+         oban: [
+           # Capture errors:
+           capture_errors: true,
+           # Monitor cron jobs:
+           cron: [enabled: true]
+         ],
+         telemetry: [
+           report_handler_failures: true
+         ]
+       ]
+
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

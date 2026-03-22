@@ -27,6 +27,18 @@ defmodule FrameworkWeb do
       import Plug.Conn
       import Phoenix.Controller
       import Phoenix.LiveView.Router
+
+      def default_assigns(conn, _opts) do
+        conn
+        |> assign(:meta_attrs, [])
+        |> assign(:manifest, nil)
+        |> assign(:current_scope, nil)
+        |> assign(:current_user, nil)
+        |> assign(:current_company, nil)
+        |> assign(:category, nil)
+        |> assign(:sub_menu, [])
+        |> assign(:"Service-Worker-Allowed", "/js/")
+      end
     end
   end
 
@@ -54,6 +66,8 @@ defmodule FrameworkWeb do
     quote do
       use Phoenix.LiveView,
         layout: {FrameworkWeb.Layouts, :app}
+
+      on_mount Sentry.LiveViewHook
 
       @doc """
       Global handling of event. This will fix error: no function clause matching in handle_info/2
@@ -103,6 +117,17 @@ defmodule FrameworkWeb do
       # Import convenience functions from controllers
       import Phoenix.Controller,
         only: [get_csrf_token: 0, view_module: 1, view_template: 1]
+
+      def get_short_link_url(assigns) do
+        assigns[:slug] || ""
+      end
+
+      def get_user_email(scope) do
+        case scope do
+          nil -> ""
+          scope -> scope.user.email
+        end
+      end
 
       # Include general helpers for rendering HTML
       unquote(html_helpers())

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" class="[scrollbar-gutter:stable]">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <meta name="referrer" content="origin-when-cross-origin" />
+    <meta name="user-email" content={get_user_email(@current_scope)} />
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/user.js"}>
+    </script>
+    <link rel="icon" type="image/ico" href={~p"/images/favicon.ico"} sizes="32x30" />
+    <link rel="apple-touch-icon" href={~p"/images/apple-touch-icon.png"} />
+    <link rel="icon" href={~p"/images/logo.png"} />
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body class="flex flex-col min-h-screen bg-slate-200">
+    <.header>
+      <div class="pl-10 bg-indigo-300 min-h-5">
+        <div class="flex flex-row-reverse px-10"></div>
+      </div>
+    </.header>
+
+    <main class="">
+      {@inner_content}
+    </main>
+  </body>
+</html>

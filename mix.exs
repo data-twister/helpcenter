@@ -36,6 +36,7 @@ defmodule Framework.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:usage_rules, "~> 0.1", only: [:dev]},
       {:cinder, "~> 0.5"},
       {:gen_smtp, "~> 1.0"},
       {:oban, "~> 2.0"},

@@ -21,6 +21,11 @@ defmodule FrameworkWeb.Router do
     plug :set_actor, :user
   end
 
+  pipeline :user do
+    plug :put_root_layout, html: {FrameworkWeb.Layouts, :user}
+    plug :default_assigns
+  end
+
   scope "/", FrameworkWeb do
     pipe_through :browser
 
@@ -39,6 +44,10 @@ defmodule FrameworkWeb.Router do
 
       live "/grok", GrokLayoutLive
 
+      scope "/manage" do
+        live "/settings", SettingsLive.Index, :index
+
+      end
       scope "/categories" do
         live "/", CategoriesLive
         live "/create", CreateCategoryLive
@@ -86,6 +95,7 @@ defmodule FrameworkWeb.Router do
 
   scope "/", FrameworkWeb do
     pipe_through :browser
+
 
     get "/", PageController, :home
 
