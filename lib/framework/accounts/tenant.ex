@@ -52,6 +52,11 @@ defmodule Framework.Accounts.Tenant do
       change Framework.Accounts.Tenant.Changes.SetOwnerCurrentTenantAfterCreate
     end
 
+    update :add_domain_via_code do
+      description "add the domain url via authcode"
+      change Framework.Accounts.Tenant.Changes.Domain
+    end
+
     read :by_domain do
       description "This action is used to read a tenant by its domain"
       filter expr(domain == ^arg(:domain))
@@ -60,6 +65,11 @@ defmodule Framework.Accounts.Tenant do
     read :by_prefix do
       description "This action is used to read a tenant by its prefix"
       filter expr(prefix == ^arg(:prefix))
+    end
+
+    read :list_origins do
+      description "list only the domains"
+      prepare build(select: [:domain])
     end
   end
 
