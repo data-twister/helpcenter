@@ -124,7 +124,12 @@ defmodule FrameworkWeb.Router do
     scope "/dev" do
       pipe_through :browser
 
-      live_dashboard "/dashboard", metrics: FrameworkWeb.Telemetry
+      live_dashboard "/dashboard",
+        metrics: FrameworkWeb.Telemetry,
+        additional_pages: [
+          oban: Oban.LiveDashboard
+        ]
+
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end

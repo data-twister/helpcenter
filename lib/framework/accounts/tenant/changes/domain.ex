@@ -7,11 +7,12 @@ defmodule Framework.Accounts.Tenant.Changes.Domain do
 
   defp run(changeset, tenant) do
     opts = [authorize?: false]
+    hostname = ""
 
-    {:ok, _user} =
+    {:ok, tenant} =
       Framework.Accounts.Tenant
       |> Ash.get!(tenant.id, opts)
-      |> Ash.Changeset.for_update(:update, %{domain: changeset.domain})
+      |> Ash.Changeset.for_update(:update, %{domain: hostname})
       |> Ash.update(opts)
 
     {:ok, tenant}

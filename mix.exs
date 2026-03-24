@@ -66,6 +66,10 @@ defmodule Framework.MixProject do
       {:ash_phoenix, "~> 2.0"},
       {:ash_postgres, "~> 2.5"},
       {:ash, "~> 3.0"},
+      {:ash_rate_limiter, "~> 1.0"},
+      {:ash_cascade_archival, "~> 0.4.0"},
+      {:ash_archival, "~> 2.0"},
+      {:ash_paper_trail, "~> 0.5.7"},
       {:igniter, "~> 0.5", only: [:dev, :test]},
       {:phoenix, "~> 1.7.18"},
       {:phoenix_ecto, "~> 4.5"},
@@ -108,10 +112,11 @@ defmodule Framework.MixProject do
       {:open_api_spex, "~> 3.16"},
       {:req, "~> 0.5", only: [:dev, :test]},
       {:sentry, "~> 12.0.1"},
-      {:haikunator, github: "data-twister/haikunator"},
       {:faker, "~> 0.18.0"},
       {:cors_plug, "~> 3.0"},
-      {:memoize, "~> 1.4"}
+      {:memoize, "~> 1.4"},
+      {:oban_live_dashboard, "~> 0.2.1"},
+      {:ash_haikuify, github: "mithereal/ash_haikuify"}
     ]
   end
 

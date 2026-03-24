@@ -50,13 +50,14 @@ if config_env() == :prod do
 
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
+  https_port = String.to_integer(System.get_env("HTTPS_PORT") || "443")
 
   origin = {FrameworkWeb.Origin, :verify_origin?, []}
 
   config :framework, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
   config :framework, FrameworkWeb.Endpoint,
-    url: [host: host, port: 443, scheme: "https"],
+    url: [host: host, port: https_port, scheme: "https"],
     http: [
       # Enable IPv6 and bind on all interfaces.
       # Set it to  {0, 0, 0, 0, 0, 0, 0, 1} for local network only access.
@@ -114,7 +115,7 @@ if config_env() == :prod do
       config :swoosh, :finch_name, Framework.Finch
 
     email_provider == "mailgun" ->
-      config :craftplan, Framework.Mailer,
+      config :framework, Framework.Mailer,
         adapter: Swoosh.Adapters.Mailgun,
         api_key: System.get_env("EMAIL_API_KEY"),
         domain: System.get_env("EMAIL_API_DOMAIN")
@@ -123,7 +124,7 @@ if config_env() == :prod do
       config :swoosh, :finch_name, Framework.Finch
 
     email_provider == "amazon_ses" ->
-      config :craftplan, Framework.Mailer,
+      config :framework, Framework.Mailer,
         adapter: Swoosh.Adapters.AmazonSES,
         access_key: System.get_env("EMAIL_API_KEY"),
         secret: System.get_env("EMAIL_API_SECRET"),
@@ -133,7 +134,7 @@ if config_env() == :prod do
       config :swoosh, :finch_name, Framework.Finch
 
     System.get_env("SMTP_HOST") != nil ->
-      config :craftplan, Framework.Mailer,
+      config :framework, Framework.Mailer,
         adapter: Swoosh.Adapters.SMTP,
         relay: System.get_env("SMTP_HOST"),
         port: String.to_integer(System.get_env("SMTP_PORT") || "587"),
@@ -149,6 +150,6 @@ if config_env() == :prod do
       # No email provider configured — use Logger adapter so emails are
       # logged instead of crashing (Local adapter's memory store is
       # disabled in prod).
-      config :craftplan, Framework.Mailer, adapter: Swoosh.Adapters.Logger
+      config :framework, Framework.Mailer, adapter: Swoosh.Adapters.Logger
   end
 end

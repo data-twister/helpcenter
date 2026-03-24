@@ -6,7 +6,11 @@ defmodule Framework.Domains.Changes.DomainCheck do
   end
 
   defp run(_changeset, domain) do
-    Framework.Workers.Domain.Verification.enqueue(%{domain: domain.host, start_at: 60})
+    Framework.Workers.Domain.Verification.enqueue(%{
+      domain: domain.host,
+      code: Haikuify.build(),
+      start_at: 60
+    })
 
     {:ok, domain}
   end

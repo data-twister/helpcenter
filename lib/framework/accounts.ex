@@ -4,7 +4,8 @@ defmodule Framework.Accounts do
 
   resources do
     resource Framework.Accounts.Tenant do
-      define :add_domain_via_code, action: :add_domain_via_code
+      define :add_domain, action: :add_domain
+      define :list_origins, action: :list_origins
     end
 
     resource Framework.Accounts.User

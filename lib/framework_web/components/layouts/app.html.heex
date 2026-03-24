@@ -1,16 +1,16 @@
 <header class="px-4 sm:px-6 lg:px-8">
   <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
-    <div class="flex items-center gap-4">
+    <div class="flex gap-4">
       <a href="/">
-        <p class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6">
+        <p class="bg-brand/5 text-brand  rounded-t-md px-4 font-medium leading-6">
           Framework
         </p>
 
         <div
           :if={@current_user}
-          class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6"
+          class="bg-brand/5 text-brand rounded-b-md px-2 font-medium leading-6"
         >
-          {@current_user.current_tenant |> Phoenix.Naming.humanize()}
+          {@current_user.current_tenant |> String.replace("_", " ")}
         </div>
       </a>
     </div>

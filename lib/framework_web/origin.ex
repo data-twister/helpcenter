@@ -18,11 +18,32 @@ defmodule FrameworkWeb.Origin do
     case result do
       true ->
         domain = Framework.Domains.lookup_by_auth_code(code)
-        Framework.Accounts.add_domain_via_code(domain)
+
+        Ash.update!(domain.tenant, %{domain: domain.host},
+          action: :update,
+          authorize?: false
+        )
+
+        Ash.update!(domain, %{status: "success"},
+          action: :update,
+          authorize?: false
+        )
+
+        :ok
 
       false ->
         domain = Framework.Domains.lookup_by_auth_code(code)
-        Framework.Domains.update(domain, %{status: "failed"})
+
+        Ash.update!(domain.tenant, %{domain: nil},
+          action: :update,
+          authorize?: false
+        )
+
+        Ash.update!(domain, %{status: "failed"},
+          action: :update,
+          authorize?: false
+        )
+
         :error
 
       _ ->
@@ -35,8 +56,13 @@ defmodule FrameworkWeb.Origin do
   end
 
   defmemop origins(), expires_in: 60 * 1000 do
-    Framework.Tenants.list_origins()
-    |> Enum.map(fn x -> x.domain end)
-    |> Enum.reject(fn x -> is_nil(x) || String.length(x) < 5 end)
+    {:ok, domains} = Framework.Accounts.list_origins()
+
+    domains =
+      domains
+      |> Enum.map(fn x -> x.domain end)
+      |> Enum.reject(fn x -> is_nil(x) || String.length(x) < 5 end)
+
+    domains ++ ["localhost", "127.0.0.1"]
   end
 end

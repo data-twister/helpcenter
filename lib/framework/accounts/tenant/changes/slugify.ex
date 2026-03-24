@@ -5,6 +5,10 @@ defmodule Framework.Accounts.Tenant.Changes.Slugify do
 
   @impl true
   def change(changeset, _opts, _context) do
-    Ash.Changeset.force_change_attribute(changeset, :prefix, Haikunator.build(9999, "_"))
+    Ash.Changeset.force_change_attribute(
+      changeset,
+      :prefix,
+      String.downcase(Haikunator.build(Faker.Dog.PtBr.name(), "_"))
+    )
   end
 end

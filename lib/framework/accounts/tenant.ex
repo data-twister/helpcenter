@@ -5,19 +5,17 @@ defmodule Framework.Accounts.Tenant do
     domain: Framework.Accounts,
     data_layer: AshPostgres.DataLayer
 
+  # , extensions: [Framework.Extensions.AshHaikunator]
+
   @doc """
   Tell ash to use domain as the tenant database prefix when we are using
   postgresql as the database, otherwise use the ID
   """
   defimpl Ash.ToTenant do
-    def to_tenant(resource, %{:prefix => prefix, :domain => domain, :id => id}) do
+    def to_tenant(resource, %{:prefix => prefix, :id => id}) do
       if Ash.Resource.Info.data_layer(resource) == AshPostgres.DataLayer &&
            Ash.Resource.Info.multitenancy_strategy(resource) == :context do
-        if is_nil(domain) || String.length(domain) < 5 do
-          prefix
-        else
-          domain
-        end
+        prefix
       else
         id
       end
@@ -52,9 +50,11 @@ defmodule Framework.Accounts.Tenant do
       change Framework.Accounts.Tenant.Changes.SetOwnerCurrentTenantAfterCreate
     end
 
-    update :add_domain_via_code do
-      description "add the domain url via authcode"
-      change Framework.Accounts.Tenant.Changes.Domain
+    update :add_domain do
+      description "add the domain url"
+      accept [:domain]
+
+      #  change Framework.Accounts.Tenant.Changes.Domain
     end
 
     read :by_domain do

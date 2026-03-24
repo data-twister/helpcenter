@@ -2,8 +2,8 @@ defmodule Framework.Workers.Domain.Verification do
   use Oban.Worker, queue: "default", max_attempts: 5, unique: [period: 30]
 
   @impl Oban.Worker
-  def perform(%Oban.Job{args: %{"domain" => domain} = _args}) do
-    FrameworkWeb.Origin.verify_header?(%URI{host: domain})
+  def perform(%Oban.Job{args: %{"domain" => domain, "code" => code} = _args}) do
+    FrameworkWeb.Origin.verify_header?(%URI{host: domain}, code)
   end
 
   @doc """
