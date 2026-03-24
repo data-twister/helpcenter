@@ -4,12 +4,12 @@ defmodule FrameworkWeb.PageController do
   use FrameworkWeb, :controller
 
   def home(conn, _params) do
-    # TODO: Configure default tenant. For now, we are picking the first available tenant
+    # TODO: load the default tenant
 
     # Retrieve categories with the articles
     categories =
       if tenant = Ash.read_first!(Framework.Accounts.Tenant) do
-        Ash.read!(Category, load: :article_count, tenant: tenant.domain, authorize?: false)
+        Ash.read!(Category, load: :article_count, tenant: tenant.prefix, authorize?: false)
       else
         []
       end

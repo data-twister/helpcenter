@@ -73,24 +73,24 @@ if config_env() == :prod do
   # S3 / Waffle (product photo uploads)
   if System.get_env("AWS_ACCESS_KEY_ID") do
     config :ex_aws,
-           json_codec: Jason,
-           access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),
-           secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY"),
-           region: System.get_env("AWS_REGION") || "us-east-1",
-           s3: [
-             scheme: System.get_env("AWS_S3_SCHEME") || "https://",
-             host: System.get_env("AWS_S3_HOST") || "s3.amazonaws.com",
-             region: System.get_env("AWS_REGION") || "us-east-1"
-           ]
+      json_codec: Jason,
+      access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),
+      secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY"),
+      region: System.get_env("AWS_REGION") || "us-east-1",
+      s3: [
+        scheme: System.get_env("AWS_S3_SCHEME") || "https://",
+        host: System.get_env("AWS_S3_HOST") || "s3.amazonaws.com",
+        region: System.get_env("AWS_REGION") || "us-east-1"
+      ]
 
     config :waffle,
-           storage: Waffle.Storage.S3,
-           bucket: System.get_env("AWS_S3_BUCKET"),
-           asset_host: System.get_env("AWS_ASSET_HOST")
+      storage: Waffle.Storage.S3,
+      bucket: System.get_env("AWS_S3_BUCKET"),
+      asset_host: System.get_env("AWS_ASSET_HOST")
   end
 
   config :sentry,
-         dsn: System.get_env("SENTRY_DSN") || nil
+    dsn: System.get_env("SENTRY_DSN") || nil
 
   email_provider = System.get_env("EMAIL_PROVIDER")
 
@@ -104,40 +104,40 @@ if config_env() == :prod do
         end
 
       config :framework, Framework.Mailer,
-             adapter: adapter,
-             api_key: System.get_env("EMAIL_API_KEY")
+        adapter: adapter,
+        api_key: System.get_env("EMAIL_API_KEY")
 
       config :swoosh, :api_client, Finch
       config :swoosh, :finch_name, Framework.Finch
 
     email_provider == "mailgun" ->
       config :craftplan, Framework.Mailer,
-             adapter: Swoosh.Adapters.Mailgun,
-             api_key: System.get_env("EMAIL_API_KEY"),
-             domain: System.get_env("EMAIL_API_DOMAIN")
+        adapter: Swoosh.Adapters.Mailgun,
+        api_key: System.get_env("EMAIL_API_KEY"),
+        domain: System.get_env("EMAIL_API_DOMAIN")
 
       config :swoosh, :api_client, Finch
       config :swoosh, :finch_name, Framework.Finch
 
     email_provider == "amazon_ses" ->
       config :craftplan, Framework.Mailer,
-             adapter: Swoosh.Adapters.AmazonSES,
-             access_key: System.get_env("EMAIL_API_KEY"),
-             secret: System.get_env("EMAIL_API_SECRET"),
-             region: System.get_env("EMAIL_API_REGION") || "us-east-1"
+        adapter: Swoosh.Adapters.AmazonSES,
+        access_key: System.get_env("EMAIL_API_KEY"),
+        secret: System.get_env("EMAIL_API_SECRET"),
+        region: System.get_env("EMAIL_API_REGION") || "us-east-1"
 
       config :swoosh, :api_client, Finch
-      config :swoosh, :finch_name, Craftplan.Finch
+      config :swoosh, :finch_name, Framework.Finch
 
     System.get_env("SMTP_HOST") != nil ->
       config :craftplan, Framework.Mailer,
-             adapter: Swoosh.Adapters.SMTP,
-             relay: System.get_env("SMTP_HOST"),
-             port: String.to_integer(System.get_env("SMTP_PORT") || "587"),
-             username: System.get_env("SMTP_USERNAME"),
-             password: System.get_env("SMTP_PASSWORD"),
-             tls: :always,
-             auth: :always
+        adapter: Swoosh.Adapters.SMTP,
+        relay: System.get_env("SMTP_HOST"),
+        port: String.to_integer(System.get_env("SMTP_PORT") || "587"),
+        username: System.get_env("SMTP_USERNAME"),
+        password: System.get_env("SMTP_PASSWORD"),
+        tls: :always,
+        auth: :always
 
       config :swoosh, :api_client, Finch
       config :swoosh, :finch_name, Framework.Finch

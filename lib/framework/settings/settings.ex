@@ -5,18 +5,19 @@ defmodule Framework.Settings.Settings do
     domain: Framework.Settings,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer]
-#    extensions: [AshJsonApi.Resource]
+
+  #    extensions: [AshJsonApi.Resource]
 
   alias Framework.Types.EncryptedBinary
-#  json_api do
-#    type "settings"
-#
-#    routes do
-#      base("/settings")
-#      get(:get)
-#      patch(:update)
-#    end
-#  end
+  #  json_api do
+  #    type "settings"
+  #
+  #    routes do
+  #      base("/settings")
+  #      get(:get)
+  #      patch(:update)
+  #    end
+  #  end
 
   postgres do
     table "settings"
@@ -40,9 +41,9 @@ defmodule Framework.Settings.Settings do
 
   policies do
     # API key scope check
-#    policy always() do
-#      authorize_if {Framework.Accounts.Checks.ApiScopeCheck, []}
-#    end
+    #    policy always() do
+    #      authorize_if {Framework.Accounts.Checks.ApiScopeCheck, []}
+    #    end
 
     # Allow read of settings for everyone (used across site)
     policy action_type(:read) do

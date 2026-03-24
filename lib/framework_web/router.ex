@@ -46,8 +46,8 @@ defmodule FrameworkWeb.Router do
 
       scope "/manage" do
         live "/settings", SettingsLive.Index, :index
-
       end
+
       scope "/categories" do
         live "/", CategoriesLive
         live "/create", CreateCategoryLive
@@ -95,7 +95,6 @@ defmodule FrameworkWeb.Router do
 
   scope "/", FrameworkWeb do
     pipe_through :browser
-
 
     get "/", PageController, :home
 

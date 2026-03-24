@@ -35,7 +35,6 @@ defmodule FrameworkWeb.SettingsLive.Index do
         </div>
       </div>
 
-
       <div :if={@live_action == :tenants}>
         <div>
           <.live_component
@@ -46,7 +45,6 @@ defmodule FrameworkWeb.SettingsLive.Index do
           />
         </div>
       </div>
-
 
       <div :if={@live_action == :api_keys}>
         <div>
@@ -67,15 +65,9 @@ defmodule FrameworkWeb.SettingsLive.Index do
           />
         </div>
 
-
-
-          <aside class="space-y-6 lg:w-96">
-
-          </aside>
-        </div>
-
+        <aside class="space-y-6 lg:w-96"></aside>
       </div>
-
+    </div>
     """
   end
 
@@ -131,7 +123,6 @@ defmodule FrameworkWeb.SettingsLive.Index do
     assign(socket, :page_title, "General Settings")
   end
 
-
   defp apply_action(socket, :api_keys, _params) do
     assign(socket, :page_title, "API Keys")
   end
@@ -144,18 +135,19 @@ defmodule FrameworkWeb.SettingsLive.Index do
     assign(socket, :page_title, "Tenants")
   end
 
-  defp settings_trail(:general), do: [Navigation.root(:settings), Navigation.page(:settings, :general)]
+  defp settings_trail(:general),
+    do: [Navigation.root(:settings), Navigation.page(:settings, :general)]
 
+  defp settings_trail(:tenants),
+    do: [Navigation.root(:settings), Navigation.page(:settings, :tenants)]
 
-  defp settings_trail(:tenants), do: [Navigation.root(:settings), Navigation.page(:settings, :tenants)]
+  defp settings_trail(:api_keys),
+    do: [Navigation.root(:settings), Navigation.page(:settings, :api_keys)]
 
-
-  defp settings_trail(:api_keys), do: [Navigation.root(:settings), Navigation.page(:settings, :api_keys)]
-
-  defp settings_trail(:calendar_feed), do: [Navigation.root(:settings), Navigation.page(:settings, :calendar_feed)]
+  defp settings_trail(:calendar_feed),
+    do: [Navigation.root(:settings), Navigation.page(:settings, :calendar_feed)]
 
   defp settings_trail(_), do: [Navigation.root(:settings)]
-
 
   @impl true
   def handle_info({FrameworkWeb.SettingsLive.FormComponent, {:saved, settings}}, socket) do

@@ -29,5 +29,4 @@ defmodule FrameworkWeb.LiveUserAuth do
       {:cont, assign(socket, :current_user, nil)}
     end
   end
-
 end

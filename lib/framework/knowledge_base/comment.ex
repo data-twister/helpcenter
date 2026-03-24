@@ -9,13 +9,13 @@ defmodule Framework.KnowledgeBase.Comment do
     repo Framework.Repo
   end
 
+  ash_parental do
+    distroy_with_children?(true)
+  end
+
   actions do
     default_accept [:content, :article_id]
     defaults [:create, :read, :update, :destroy]
-  end
-
-  ash_parental do
-    distroy_with_children?(true)
   end
 
   preparations do

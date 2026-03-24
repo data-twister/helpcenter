@@ -2,10 +2,14 @@
 defmodule Framework.MixProject do
   use Mix.Project
 
+  @version "0.1.0"
+  @description "ERP for Printable Services"
+  @build_date DateTime.utc_now()
+
   def project do
     [
       app: :framework,
-      version: "0.1.0",
+      version: @version,
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -13,8 +17,19 @@ defmodule Framework.MixProject do
       # Include "lib" for integration tests
       test_paths: ["test", "lib"],
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      description: @description,
+      releases: releases(),
+      build_date: @build_date,
+      build_hash: __MODULE__.get_hash()
     ]
+  end
+
+  def get_hash do
+    {hash, _} = System.cmd("git", ["rev-parse", "--short=8", "HEAD"])
+    String.trim(hash)
+  catch
+    _x -> ""
   end
 
   # Configuration for the OTP application.
@@ -92,7 +107,10 @@ defmodule Framework.MixProject do
       {:imprintor, "~> 0.5"},
       {:open_api_spex, "~> 3.16"},
       {:req, "~> 0.5", only: [:dev, :test]},
-      {:sentry, "~> 12.0.1"}
+      {:sentry, "~> 12.0.1"},
+      {:haikunator, github: "data-twister/haikunator"},
+      {:faker, "~> 0.18.0"},
+      {:cors_plug, "~> 3.0"},
     ]
   end
 
@@ -116,6 +134,14 @@ defmodule Framework.MixProject do
         "phx.digest"
       ],
       "phx.routes": ["phx.routes", "ash_authentication.phoenix.routes"]
+    ]
+  end
+
+  defp releases do
+    [
+      craftplan: [
+        steps: [:assemble, :tar]
+      ]
     ]
   end
 end

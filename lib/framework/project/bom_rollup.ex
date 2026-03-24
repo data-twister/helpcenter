@@ -1,0 +1,92 @@
+defmodule Framework.Project.BOMRollup do
+  @moduledoc false
+  use Ash.Resource,
+    otp_app: :framework,
+    domain: Framework.Project,
+    data_layer: AshPostgres.DataLayer
+
+  postgres do
+    table "project_bom_rollups"
+    repo Framework.Repo
+  end
+
+  actions do
+    defaults [:read]
+
+    create :create do
+      primary? true
+
+      accept [
+        :bom_id,
+        :item_id,
+        :material_cost,
+        :labor_cost,
+        :overhead_cost,
+        :unit_cost,
+        :components_map
+      ]
+    end
+
+    update :update do
+      accept [:material_cost, :labor_cost, :overhead_cost, :unit_cost, :components_map]
+    end
+  end
+
+  preparations do
+    prepare Framework.Preparations.SetTenant
+  end
+
+  changes do
+    change Framework.Changes.SetTenant
+  end
+
+  multitenancy do
+    strategy :context
+  end
+
+  attributes do
+    uuid_primary_key :id
+
+    attribute :material_cost, :decimal do
+      allow_nil? false
+      default 0
+    end
+
+    attribute :labor_cost, :decimal do
+      allow_nil? false
+      default 0
+    end
+
+    attribute :overhead_cost, :decimal do
+      allow_nil? false
+      default 0
+    end
+
+    attribute :unit_cost, :decimal do
+      allow_nil? false
+      default 0
+    end
+
+    # Flattened materials used per unit (JSONB map: material_id => quantity as string)
+    attribute :components_map, :map do
+      allow_nil? false
+      default %{}
+    end
+
+    timestamps()
+  end
+
+  relationships do
+    belongs_to :bom, Framework.Project.BOM do
+      allow_nil? false
+    end
+
+    belongs_to :item, Framework.Project.Item do
+      allow_nil? false
+    end
+  end
+
+  identities do
+    identity :unique_bom, [:bom_id]
+  end
+end

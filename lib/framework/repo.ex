@@ -23,7 +23,7 @@ defmodule Framework.Repo do
   """
   def all_tenants do
     for tenant <- Ash.read!(Framework.Accounts.Tenant) do
-      tenant.domain
+      tenant.prefix
     end
   end
 end

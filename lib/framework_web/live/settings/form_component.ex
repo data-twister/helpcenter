@@ -138,7 +138,7 @@ defmodule FrameworkWeb.SettingsLive.FormComponent do
                 field={@form[:email_from_address]}
                 type="email"
                 label="Sender email"
-                placeholder="noreply@craftplan.app"
+                placeholder="noreply@framework.app"
               />
             </div>
           </section>
@@ -343,7 +343,8 @@ defmodule FrameworkWeb.SettingsLive.FormComponent do
 
   @impl true
   def handle_event("validate", %{"settings" => setting_params}, socket) do
-    {:noreply, assign(socket, form: AshPhoenix.Form.validate(socket.assigns.form, setting_params))}
+    {:noreply,
+     assign(socket, form: AshPhoenix.Form.validate(socket.assigns.form, setting_params))}
   end
 
   def handle_event("save", %{"settings" => setting_params}, socket) do

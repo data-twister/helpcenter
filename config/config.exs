@@ -25,7 +25,8 @@ config :ash,
   policies: [no_filter_static_forbidden_reads?: false],
   known_types: [AshMoney.Types.Money],
   custom_types: [
-    money: Money
+    money: Money,
+    unit: Framework.Types.Unit,
   ]
 
 config :spark,
@@ -58,7 +59,7 @@ config :spark,
 config :framework,
   ecto_repos: [Framework.Repo],
   generators: [timestamp_type: :utc_datetime],
-  ash_domains: [Framework.Accounts, Framework.KnowledgeBase]
+  ash_domains: [Framework.Accounts, Framework.KnowledgeBase, Framework.CRM, Framework.Project,  Framework.Orders, Framework.Inventory]
 
 # Configures the endpoint
 config :framework, FrameworkWeb.Endpoint,
@@ -111,7 +112,8 @@ config :tailwind,
       --output=../priv/static/assets/app.css
     ),
     cd: Path.expand("../assets", __DIR__)
-  ], user: [
+  ],
+  user: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/user.css
@@ -133,23 +135,42 @@ config :ex_cldr, default_backend: Framework.Cldr
 config :elixir, :time_zone_database, Tz.TimeZoneDatabase
 
 config :sentry,
-       dsn: "https://examplePublicKey@o0.ingest.sentry.io/0",
-       environment_name: Mix.env(),
-       enable_source_code_context: true,
-       root_source_code_paths: [File.cwd!()],
-       integrations: [
-         oban: [
-           # Capture errors:
-           capture_errors: true,
-           # Monitor cron jobs:
-           cron: [enabled: true]
-         ],
-         telemetry: [
-           report_handler_failures: true
-         ]
-       ]
+  dsn: "https://examplePublicKey@o0.ingest.sentry.io/0",
+  environment_name: Mix.env(),
+  enable_source_code_context: true,
+  root_source_code_paths: [File.cwd!()],
+  integrations: [
+    oban: [
+      # Capture errors:
+      capture_errors: true,
+      # Monitor cron jobs:
+      cron: [enabled: true]
+    ],
+    telemetry: [
+      report_handler_failures: true
+    ]
+  ]
 
-
+config :haikunator, :adjectives, ~w(
+  autumn hidden bitter misty silent empty dry dark summer
+  icy delicate quiet white cool spring winter patient
+  twilight dawn crimson wispy weathered blue billowing
+  broken cold damp falling frosty green long late lingering
+  bold little morning muddy old red rough still small
+  sparkling throbbing shy wandering withered wild black
+  young holy solitary fragrant aged snowy proud floral
+  restless divine polished ancient purple lively nameless
+)
+config :haikunator, :nouns, ~w(
+   waterfall river breeze moon rain wind sea morning
+   snow lake sunset pine shadow leaf dawn glitter forest
+   hill cloud meadow sun glade bird brook butterfly
+   bush dew dust field fire flower firefly feather grass
+   haze mountain night pond darkness snowflake silence
+   sound sky shape surf thunder violet water wildflower
+   wave water resonance sun wood dream cherry tree fog
+   frost voice paper frog smoke star
+)
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

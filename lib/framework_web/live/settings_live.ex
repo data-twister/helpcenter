@@ -18,7 +18,6 @@ defmodule FrameworkWeb.LiveSettings do
     end
   end
 
-
   defp load_settings(socket) do
     settings =
       case Framework.Settings.get_settings(actor: socket.assigns.actor, authorize?: false) do

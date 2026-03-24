@@ -10,10 +10,14 @@ defmodule Framework.Accounts.Tenant do
   postgresql as the database, otherwise use the ID
   """
   defimpl Ash.ToTenant do
-    def to_tenant(resource, %{:domain => domain, :id => id}) do
+    def to_tenant(resource, %{:prefix => prefix, :domain => domain, :id => id}) do
       if Ash.Resource.Info.data_layer(resource) == AshPostgres.DataLayer &&
            Ash.Resource.Info.multitenancy_strategy(resource) == :context do
-        domain
+        if is_nil(domain) || String.length(domain) < 5 do
+          prefix
+        else
+          domain
+        end
       else
         id
       end
@@ -25,7 +29,7 @@ defmodule Framework.Accounts.Tenant do
     repo Framework.Repo
 
     manage_tenant do
-      template ["", :domain]
+      template ["", :prefix]
       create? true
       update? false
     end
@@ -34,14 +38,16 @@ defmodule Framework.Accounts.Tenant do
   code_interface do
     # the action open can be omitted because it matches the function name
     define :by_domain, args: [:domain], action: :by_domain
+    define :by_prefix, args: [:prefix], action: :by_prefix
   end
 
   actions do
-    default_accept [:name, :domain, :description, :owner_user_id]
+    default_accept [:name, :domain, :prefix, :description, :owner_user_id]
     defaults [:read]
 
     create :create do
       primary? true
+      change Framework.Accounts.Tenant.Changes.Slugify
       change Framework.Accounts.Tenant.Changes.AssociateUserToTenant
       change Framework.Accounts.Tenant.Changes.SetOwnerCurrentTenantAfterCreate
     end
@@ -50,11 +56,16 @@ defmodule Framework.Accounts.Tenant do
       description "This action is used to read a tenant by its domain"
       filter expr(domain == ^arg(:domain))
     end
+
+    read :by_prefix do
+      description "This action is used to read a tenant by its prefix"
+      filter expr(prefix == ^arg(:prefix))
+    end
   end
 
-#  preparations do
-#    prepare build(load: [:settings])
-#  end
+  #  preparations do
+  #    prepare build(load: [:settings])
+  #  end
 
   attributes do
     uuid_v7_primary_key :id
@@ -71,14 +82,19 @@ defmodule Framework.Accounts.Tenant do
       description "Domain name of the tenant or organisation"
     end
 
+    attribute :prefix, :string do
+      allow_nil? true
+      public? true
+      description "Table Prefix for the tenant"
+    end
+
     attribute :description, :string, allow_nil?: true, public?: true
 
     timestamps()
   end
 
   relationships do
-
-#    has_one :settings, Framework.Settings.Setting
+    #    has_one :settings, Framework.Settings.Setting
 
     belongs_to :owner, Framework.Accounts.User do
       source_attribute :owner_user_id

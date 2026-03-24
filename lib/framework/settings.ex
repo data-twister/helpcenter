@@ -1,14 +1,14 @@
 defmodule Framework.Settings do
   @moduledoc false
   use Ash.Domain
-#    extensions: [AshJsonApi.Domain, AshGraphql.Domain]
+  #    extensions: [AshJsonApi.Domain, AshGraphql.Domain]
 
-#  json_api do
-#    prefix "/api/json"
-#  end
-#
-#  graphql do
-#  end
+  #  json_api do
+  #    prefix "/api/json"
+  #  end
+  #
+  #  graphql do
+  #  end
 
   resources do
     resource Framework.Settings.Settings do

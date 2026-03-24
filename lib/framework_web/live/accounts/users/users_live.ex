@@ -26,7 +26,7 @@ defmodule FrameworkWeb.Accounts.Users.UsersLive do
     require Ash.Query
 
     Framework.Accounts.User
-    |> Ash.Query.filter(tenants.domain == ^current_user.current_tenant)
+    |> Ash.Query.filter(tenants.prefix == ^current_user.current_tenant)
     |> Ash.Query.for_read(:read, %{}, authorize?: false)
   end
 end

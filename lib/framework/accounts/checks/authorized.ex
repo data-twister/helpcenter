@@ -30,7 +30,7 @@ defmodule Framework.Accounts.Checks.Authorized do
   defp is_current_tenant_owner?(actor) do
     Framework.Accounts.Tenant
     |> Ash.Query.filter(owner_user_id == ^actor.id)
-    |> Ash.Query.filter(domain == ^actor.current_tenant)
+    |> Ash.Query.filter(prefix == ^actor.current_tenant)
     |> Ash.exists?()
   end
 

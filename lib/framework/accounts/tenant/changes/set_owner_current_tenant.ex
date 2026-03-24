@@ -11,7 +11,7 @@ defmodule Framework.Accounts.Tenant.Changes.SetOwnerCurrentTenant do
     {:ok, _user} =
       Framework.Accounts.User
       |> Ash.get!(tenant.owner_user_id, opts)
-      |> Ash.Changeset.for_update(:set_current_tenant, %{tenant: tenant.domain})
+      |> Ash.Changeset.for_update(:set_current_tenant, %{tenant: tenant.prefix})
       |> Ash.update(opts)
 
     {:ok, tenant}
