@@ -3,7 +3,10 @@ defmodule Framework.Accounts do
   use Ash.Domain, otp_app: :framework
 
   resources do
-    resource Framework.Accounts.Tenant
+    resource Framework.Accounts.Tenant do
+      define :add_domain_via_code, action: :add_domain_via_code
+    end
+
     resource Framework.Accounts.User
     resource Framework.Accounts.Group
     resource Framework.Accounts.UserTenant

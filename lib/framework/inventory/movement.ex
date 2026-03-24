@@ -7,6 +7,11 @@ defmodule Framework.Inventory.Movement do
     authorizers: [Ash.Policy.Authorizer],
     extensions: [AshJsonApi.Resource, AshGraphql.Resource]
 
+  postgres do
+    table "inventory_movements"
+    repo Framework.Repo
+  end
+
   json_api do
     type "movement"
 
@@ -24,11 +29,6 @@ defmodule Framework.Inventory.Movement do
       get(:get_movement, :read)
       list(:list_movements, :read)
     end
-  end
-
-  postgres do
-    table "inventory_movements"
-    repo Framework.Repo
   end
 
   actions do

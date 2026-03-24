@@ -140,7 +140,8 @@ defmodule Framework.Production.BatchSheet do
 
   defp format_status(nil), do: "Unknown"
 
-  defp format_status(batch), do: batch.status |> to_string() |> String.replace("_", " ") |> String.capitalize()
+  defp format_status(batch),
+    do: batch.status |> to_string() |> String.replace("_", " ") |> String.capitalize()
 
   defp format_decimal(%D{} = d), do: D.to_string(D.normalize(d))
   defp format_decimal(_), do: "0"

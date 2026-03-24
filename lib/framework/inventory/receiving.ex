@@ -40,7 +40,9 @@ defmodule Framework.Inventory.Receiving do
           )
       end)
 
-      Inventory.update_purchase_order(po, %{status: :received, received_at: DateTime.utc_now()}, actor: actor)
+      Inventory.update_purchase_order(po, %{status: :received, received_at: DateTime.utc_now()},
+        actor: actor
+      )
     end
   end
 end

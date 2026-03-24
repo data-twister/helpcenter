@@ -7,6 +7,17 @@ defmodule Framework.Inventory.Lot do
     authorizers: [Ash.Policy.Authorizer],
     extensions: [AshJsonApi.Resource, AshGraphql.Resource]
 
+  postgres do
+    table "inventory_lots"
+    repo Framework.Repo
+
+    custom_indexes do
+      index [:lot_code], unique: true, name: "inventory_lots_lot_code_index"
+      index [:material_id], name: "inventory_lots_material_id_index"
+      index [:supplier_id], name: "inventory_lots_supplier_id_index"
+    end
+  end
+
   json_api do
     type "lot"
 
@@ -23,17 +34,6 @@ defmodule Framework.Inventory.Lot do
     queries do
       get(:get_lot, :read)
       list(:list_lots, :read)
-    end
-  end
-
-  postgres do
-    table "inventory_lots"
-    repo Framework.Repo
-
-    custom_indexes do
-      index [:lot_code], unique: true, name: "inventory_lots_lot_code_index"
-      index [:material_id], name: "inventory_lots_material_id_index"
-      index [:supplier_id], name: "inventory_lots_supplier_id_index"
     end
   end
 

@@ -93,9 +93,11 @@ defmodule Framework.Types.Unit do
   def abbreviation(:milliliter, 1), do: "1 #{@singular_names.milliliter}"
   def abbreviation(:milliliter, -1), do: "-1 #{@singular_names.milliliter}"
 
-  def abbreviation(:milliliter, value) when is_integer(value), do: "#{value} #{@plural_names.milliliter}"
+  def abbreviation(:milliliter, value) when is_integer(value),
+    do: "#{value} #{@plural_names.milliliter}"
 
-  def abbreviation(:milliliter, value), do: "#{format_number(value)}#{@unit_abbreviations.milliliter}"
+  def abbreviation(:milliliter, value),
+    do: "#{format_number(value)}#{@unit_abbreviations.milliliter}"
 
   # Piece special cases
   def abbreviation(:piece, 0), do: "no pieces"
@@ -103,20 +105,25 @@ defmodule Framework.Types.Unit do
   def abbreviation(:piece, -1), do: "-1 #{@singular_names.piece}"
   def abbreviation(:piece, value) when is_integer(value), do: "#{value} #{@plural_names.piece}"
 
-  def abbreviation(:piece, value), do: "#{:erlang.float_to_binary(value, decimals: 0)} #{@plural_names.piece}"
+  def abbreviation(:piece, value),
+    do: "#{:erlang.float_to_binary(value, decimals: 0)} #{@plural_names.piece}"
 
   # Kcal (kilocalories) - no conversion needed, always displays as kcal
-  def abbreviation(:kcal, value) when is_integer(value), do: "#{value} #{@unit_abbreviations.kcal}"
+  def abbreviation(:kcal, value) when is_integer(value),
+    do: "#{value} #{@unit_abbreviations.kcal}"
 
   def abbreviation(:kcal, value), do: "#{format_number(value)} #{@unit_abbreviations.kcal}"
 
   # Milligram - no automatic conversion to avoid confusion with gram conversions
-  def abbreviation(:milligram, value) when is_integer(value), do: "#{value} #{@unit_abbreviations.milligram}"
+  def abbreviation(:milligram, value) when is_integer(value),
+    do: "#{value} #{@unit_abbreviations.milligram}"
 
-  def abbreviation(:milligram, value), do: "#{format_number(value)} #{@unit_abbreviations.milligram}"
+  def abbreviation(:milligram, value),
+    do: "#{format_number(value)} #{@unit_abbreviations.milligram}"
 
   # Percent - displays with % symbol
-  def abbreviation(:percent, value) when is_integer(value), do: "#{value}#{@unit_abbreviations.percent}"
+  def abbreviation(:percent, value) when is_integer(value),
+    do: "#{value}#{@unit_abbreviations.percent}"
 
   def abbreviation(:percent, value), do: "#{format_number(value)}#{@unit_abbreviations.percent}"
 

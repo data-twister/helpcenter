@@ -9,6 +9,11 @@ defmodule Framework.Project.BOMComponent do
   alias Framework.Project.Changes.ValidateComponentTarget
   alias Framework.Project.Services.BOMRollup
 
+  postgres do
+    table "project_bom_components"
+    repo Framework.Repo
+  end
+
   json_api do
     type "bom-component"
 
@@ -26,11 +31,6 @@ defmodule Framework.Project.BOMComponent do
       get(:get_bom_component, :read)
       list(:list_bom_components, :read)
     end
-  end
-
-  postgres do
-    table "project_bom_components"
-    repo Framework.Repo
   end
 
   actions do

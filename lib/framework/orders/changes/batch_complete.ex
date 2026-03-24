@@ -39,7 +39,8 @@ defmodule Framework.Orders.Changes.BatchComplete do
         {:error, {:insufficient_stock, material_id, required, short}} ->
           Changeset.add_error(changeset,
             field: :lot_plan,
-            message: "Insufficient stock for material %{material_id}. Need %{required}, short by %{short}.",
+            message:
+              "Insufficient stock for material %{material_id}. Need %{required}, short by %{short}.",
             vars: %{
               material_id: material_id,
               required: D.to_string(required),

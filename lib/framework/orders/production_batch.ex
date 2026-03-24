@@ -13,6 +13,15 @@ defmodule Framework.Orders.ProductionBatch do
 
   require Ash.Query
 
+  postgres do
+    table "orders_production_batches"
+    repo Framework.Repo
+
+    custom_indexes do
+      index [:batch_code], unique: true, name: "orders_production_batches_batch_code_index"
+    end
+  end
+
   json_api do
     type "production-batch"
 
@@ -29,15 +38,6 @@ defmodule Framework.Orders.ProductionBatch do
     queries do
       get(:get_production_batch, :read)
       list(:list_production_batches, :read)
-    end
-  end
-
-  postgres do
-    table "orders_production_batches"
-    repo Framework.Repo
-
-    custom_indexes do
-      index [:batch_code], unique: true, name: "orders_production_batches_batch_code_index"
     end
   end
 

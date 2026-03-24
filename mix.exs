@@ -111,6 +111,7 @@ defmodule Framework.MixProject do
       {:haikunator, github: "data-twister/haikunator"},
       {:faker, "~> 0.18.0"},
       {:cors_plug, "~> 3.0"},
+      {:memoize, "~> 1.4"}
     ]
   end
 

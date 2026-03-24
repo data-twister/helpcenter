@@ -9,6 +9,18 @@ defmodule Framework.Project.BOM do
   alias Framework.Project.Changes.AssignBOMVersion
   alias Framework.Project.Services.BOMRollup
 
+  postgres do
+    table "project_boms"
+    repo Framework.Repo
+
+    custom_indexes do
+      index [:item_id],
+        unique: true,
+        name: "project_boms_one_active_per_item",
+        where: "status = 'active'"
+    end
+  end
+
   json_api do
     type "bom"
 
@@ -25,18 +37,6 @@ defmodule Framework.Project.BOM do
     queries do
       get(:get_bom, :read)
       list(:list_boms, :list_for_item)
-    end
-  end
-
-  postgres do
-    table "project_boms"
-    repo Framework.Repo
-
-    custom_indexes do
-      index [:item_id],
-        unique: true,
-        name: "project_boms_one_active_per_item",
-        where: "status = 'active'"
     end
   end
 

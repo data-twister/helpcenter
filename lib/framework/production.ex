@@ -547,7 +547,8 @@ defmodule Framework.Production do
   defp resolve_batch_bom(_, [first | _]), do: first.bom
   defp resolve_batch_bom(_, _), do: nil
 
-  defp resolve_produced_at(%{produced_at: produced_at}, _items) when not is_nil(produced_at), do: produced_at
+  defp resolve_produced_at(%{produced_at: produced_at}, _items) when not is_nil(produced_at),
+    do: produced_at
 
   defp resolve_produced_at(_, items) do
     items

@@ -9,6 +9,11 @@ defmodule Framework.Project.Item do
 
   alias Framework.Project.BOM
 
+  postgres do
+    table "project_items"
+    repo Framework.Repo
+  end
+
   json_api do
     type "item"
 
@@ -35,11 +40,6 @@ defmodule Framework.Project.Item do
       update :update_item, :update
       destroy :destroy_item, :destroy
     end
-  end
-
-  postgres do
-    table "project_items"
-    repo Framework.Repo
   end
 
   actions do
@@ -96,12 +96,12 @@ defmodule Framework.Project.Item do
     # API key scope check
     policy always() do
       authorize_if always()
-    #  authorize_if {Framework.Accounts.Checks.ApiScopeCheck, []}
+      #  authorize_if {Framework.Accounts.Checks.ApiScopeCheck, []}
     end
 
     policy action_type([:create, :read, :update, :destroy]) do
       authorize_if always()
-   #   forbid_unless Framework.Accounts.Checks.ActorBelongsToTenant
+      #   forbid_unless Framework.Accounts.Checks.ActorBelongsToTenant
     end
 
     # Admin can do anything

@@ -26,7 +26,7 @@ config :ash,
   known_types: [AshMoney.Types.Money],
   custom_types: [
     money: Money,
-    unit: Framework.Types.Unit,
+    unit: Framework.Types.Unit
   ]
 
 config :spark,
@@ -59,7 +59,15 @@ config :spark,
 config :framework,
   ecto_repos: [Framework.Repo],
   generators: [timestamp_type: :utc_datetime],
-  ash_domains: [Framework.Accounts, Framework.KnowledgeBase, Framework.CRM, Framework.Project,  Framework.Orders, Framework.Inventory]
+  ash_domains: [
+    Framework.Accounts,
+    Framework.KnowledgeBase,
+    Framework.CRM,
+    Framework.Project,
+    Framework.Orders,
+    Framework.Inventory,
+    Framework.Domains
+  ]
 
 # Configures the endpoint
 config :framework, FrameworkWeb.Endpoint,

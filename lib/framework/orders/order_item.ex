@@ -17,6 +17,11 @@ defmodule Framework.Orders.OrderItem do
     order: [:reference, :delivery_date, customer: [:full_name]]
   ]
 
+  postgres do
+    table "orders_items"
+    repo Framework.Repo
+  end
+
   json_api do
     type "order-item"
 
@@ -41,11 +46,6 @@ defmodule Framework.Orders.OrderItem do
       create :create_order_item, :create
       update :update_order_item, :update
     end
-  end
-
-  postgres do
-    table "orders_items"
-    repo Framework.Repo
   end
 
   actions do
@@ -97,7 +97,9 @@ defmodule Framework.Orders.OrderItem do
       prepare build(load: [:item, :order])
 
       # filter by the parent order's delivery_date
-      filter expr(order.delivery_date >= ^arg(:start_date) and order.delivery_date <= ^arg(:end_date))
+      filter expr(
+               order.delivery_date >= ^arg(:start_date) and order.delivery_date <= ^arg(:end_date)
+             )
 
       # optionally filter by items
       filter expr(is_nil(^arg(:item_ids)) or item_id in ^arg(:item_ids))

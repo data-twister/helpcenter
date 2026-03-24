@@ -9,6 +9,11 @@ defmodule Framework.Inventory.PurchaseOrder do
 
   alias Framework.Inventory.PurchaseOrder.Types.Status
 
+  postgres do
+    table "inventory_purchase_orders"
+    repo Framework.Repo
+  end
+
   json_api do
     type "purchase-order"
 
@@ -33,11 +38,6 @@ defmodule Framework.Inventory.PurchaseOrder do
       create :create_purchase_order, :create
       update :update_purchase_order, :update
     end
-  end
-
-  postgres do
-    table "inventory_purchase_orders"
-    repo Framework.Repo
   end
 
   actions do

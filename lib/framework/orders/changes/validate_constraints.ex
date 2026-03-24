@@ -63,7 +63,8 @@ defmodule Framework.Orders.Changes.ValidateConstraints do
       if Date.before?(DateTime.to_date(delivery_dt), min_date) do
         Changeset.add_error(changeset,
           field: :delivery_date,
-          message: "delivery date must be on or after #{Date.to_iso8601(min_date)} (lead time #{lead_days}d)"
+          message:
+            "delivery date must be on or after #{Date.to_iso8601(min_date)} (lead time #{lead_days}d)"
         )
       else
         changeset

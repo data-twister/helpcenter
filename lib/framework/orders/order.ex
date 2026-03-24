@@ -12,6 +12,11 @@ defmodule Framework.Orders.Order do
   alias Framework.Orders.Order.Types.PaymentStatus
   alias Framework.Orders.Order.Types.Status
 
+  postgres do
+    table "orders_orders"
+    repo Framework.Repo
+  end
+
   json_api do
     type "order"
 
@@ -36,11 +41,6 @@ defmodule Framework.Orders.Order do
       create :create_order, :create
       update :update_order, :update
     end
-  end
-
-  postgres do
-    table "orders_orders"
-    repo Framework.Repo
   end
 
   actions do
@@ -139,7 +139,9 @@ defmodule Framework.Orders.Order do
       filter expr(is_nil(^arg(:status)) or status in ^arg(:status))
       filter expr(is_nil(^arg(:payment_status)) or payment_status in ^arg(:payment_status))
 
-      filter expr(is_nil(^arg(:delivery_date_start)) or delivery_date >= ^arg(:delivery_date_start))
+      filter expr(
+               is_nil(^arg(:delivery_date_start)) or delivery_date >= ^arg(:delivery_date_start)
+             )
 
       filter expr(is_nil(^arg(:delivery_date_end)) or delivery_date <= ^arg(:delivery_date_end))
 

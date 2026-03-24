@@ -44,7 +44,9 @@ defmodule Production.InventoryForecasting do
     end_date = Enum.max(days_range, Date)
 
     Orders.Order
-    |> Ash.Query.for_read(:for_forecast, %{start_date: start_date, end_date: end_date}, actor: actor)
+    |> Ash.Query.for_read(:for_forecast, %{start_date: start_date, end_date: end_date},
+      actor: actor
+    )
     |> Ash.read!()
   end
 
@@ -396,7 +398,8 @@ defmodule Production.InventoryForecasting do
     |> Map.get(:components, [])
   end
 
-  defp ensure_components_loaded(%{components: components}, _actor) when is_list(components), do: components
+  defp ensure_components_loaded(%{components: components}, _actor) when is_list(components),
+    do: components
 
   defp ensure_components_loaded(_bom, _actor), do: []
 

@@ -73,7 +73,8 @@ defmodule Framework.Orders.Changes.AssignBatchCodeAndCost do
   end
 
   defp transitioning_to_done?(changeset) do
-    case {Changeset.changing_attribute?(changeset, :status), Changeset.get_attribute(changeset, :status)} do
+    case {Changeset.changing_attribute?(changeset, :status),
+          Changeset.get_attribute(changeset, :status)} do
       {true, :done} ->
         current_status = get_data_field(changeset, :status)
         current_status != :done
@@ -102,7 +103,9 @@ defmodule Framework.Orders.Changes.AssignBatchCodeAndCost do
     next_seq =
       OrderItem
       |> Query.new()
-      |> Query.filter(expr(not is_nil(batch_code) and fragment("? LIKE ?", batch_code, ^"#{prefix}-%")))
+      |> Query.filter(
+        expr(not is_nil(batch_code) and fragment("? LIKE ?", batch_code, ^"#{prefix}-%"))
+      )
       |> Query.sort(batch_code: :desc)
       |> Query.limit(1)
       |> Ash.read_one(actor: actor, authorize?: authorize?)

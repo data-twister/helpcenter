@@ -7,6 +7,11 @@ defmodule Framework.Inventory.Supplier do
     authorizers: [Ash.Policy.Authorizer],
     extensions: [AshJsonApi.Resource, AshGraphql.Resource]
 
+  postgres do
+    table "inventory_suppliers"
+    repo Framework.Repo
+  end
+
   json_api do
     type "supplier"
 
@@ -31,11 +36,6 @@ defmodule Framework.Inventory.Supplier do
       create :create_supplier, :create
       update :update_supplier, :update
     end
-  end
-
-  postgres do
-    table "inventory_suppliers"
-    repo Framework.Repo
   end
 
   actions do

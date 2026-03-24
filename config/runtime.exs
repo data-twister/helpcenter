@@ -51,6 +51,8 @@ if config_env() == :prod do
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
+  origin = {FrameworkWeb.Origin, :verify_origin?, []}
+
   config :framework, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
   config :framework, FrameworkWeb.Endpoint,
@@ -63,6 +65,7 @@ if config_env() == :prod do
       ip: {0, 0, 0, 0, 0, 0, 0, 0},
       port: port
     ],
+    check_origin: origin,
     secret_key_base: secret_key_base
 
   config :framework,

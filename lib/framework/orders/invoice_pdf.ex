@@ -47,7 +47,8 @@ defmodule Framework.Orders.InvoicePdf do
       "issued_date" => format_date(Date.utc_today()),
       "delivery_date" => format_datetime(order.delivery_date),
       "customer_name" => (customer && customer.full_name) || "",
-      "customer_address" => (customer && customer.shipping_address && customer.shipping_address.full_address) || "",
+      "customer_address" =>
+        (customer && customer.shipping_address && customer.shipping_address.full_address) || "",
       "items" => build_items(order.items, currency),
       "subtotal" => format_money(currency, order.subtotal),
       "shipping_total" => format_money(currency, order.shipping_total),
@@ -78,7 +79,8 @@ defmodule Framework.Orders.InvoicePdf do
   defp format_datetime(nil), do: ""
   defp format_datetime(%DateTime{} = dt), do: dt |> DateTime.to_date() |> format_date()
 
-  defp format_datetime(%NaiveDateTime{} = ndt), do: ndt |> NaiveDateTime.to_date() |> format_date()
+  defp format_datetime(%NaiveDateTime{} = ndt),
+    do: ndt |> NaiveDateTime.to_date() |> format_date()
 
   defp format_datetime(%Date{} = d), do: format_date(d)
   defp format_datetime(_), do: ""

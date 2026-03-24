@@ -10,6 +10,11 @@ defmodule Framework.Inventory.Material do
   alias Framework.Inventory.MaterialAllergen
   alias Framework.Inventory.MaterialNutritionalFact
 
+  postgres do
+    table "inventory_materials"
+    repo Framework.Repo
+  end
+
   json_api do
     type "material"
 
@@ -34,11 +39,6 @@ defmodule Framework.Inventory.Material do
       create :create_material, :create
       update :update_material, :update
     end
-  end
-
-  postgres do
-    table "inventory_materials"
-    repo Framework.Repo
   end
 
   actions do
@@ -183,7 +183,8 @@ defmodule Framework.Inventory.Material do
 
     many_to_many :allergens, Framework.Inventory.Allergen, through: MaterialAllergen
 
-    many_to_many :nutritional_facts, Framework.Inventory.NutritionalFact, through: MaterialNutritionalFact
+    many_to_many :nutritional_facts, Framework.Inventory.NutritionalFact,
+      through: MaterialNutritionalFact
   end
 
   aggregates do

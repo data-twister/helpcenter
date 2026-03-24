@@ -295,7 +295,7 @@ defmodule Framework.Settings.Settings do
   end
 
   relationships do
-    belongs_to :tenant, Tenant do
+    belongs_to :tenant, Framework.Accounts.Tenant do
       allow_nil? true
     end
   end

@@ -29,7 +29,8 @@ defmodule Framework.Inventory.PurchaseOrderItem do
                   :material,
                   purchase_order: [:supplier]
                 ],
-                filter: expr(material_id == ^arg(:material_id) and purchase_order.status != :received)
+                filter:
+                  expr(material_id == ^arg(:material_id) and purchase_order.status != :received)
               )
     end
 

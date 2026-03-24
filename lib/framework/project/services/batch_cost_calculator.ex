@@ -8,7 +8,6 @@ defmodule Framework.Project.Services.BatchCostCalculator do
   alias Framework.Settings
   alias Decimal, as: D
 
-
   @spec calculate(BOM.t(), number | D.t(), keyword) :: %{
           material_cost: D.t(),
           labor_cost: D.t(),
@@ -76,7 +75,13 @@ defmodule Framework.Project.Services.BatchCostCalculator do
   end
 
   @spec component_cost(BOMComponent.t(), D.t(), keyword(), map(), MapSet.t()) :: D.t()
-  defp component_cost(%BOMComponent{component_type: :material} = component, quantity, _opts, _settings, _path) do
+  defp component_cost(
+         %BOMComponent{component_type: :material} = component,
+         quantity,
+         _opts,
+         _settings,
+         _path
+       ) do
     multiplier = waste_multiplier(component)
 
     total_quantity =
@@ -91,7 +96,13 @@ defmodule Framework.Project.Services.BatchCostCalculator do
     D.mult(total_quantity, price)
   end
 
-  defp component_cost(%BOMComponent{component_type: :item} = component, quantity, opts, settings, path) do
+  defp component_cost(
+         %BOMComponent{component_type: :item} = component,
+         quantity,
+         opts,
+         settings,
+         path
+       ) do
     total_quantity =
       quantity
       |> D.mult(DecimalHelpers.to_decimal(component.quantity))
