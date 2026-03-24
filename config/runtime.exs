@@ -70,53 +70,82 @@ if config_env() == :prod do
       System.get_env("TOKEN_SIGNING_SECRET") ||
         raise("Missing environment variable `TOKEN_SIGNING_SECRET`!")
 
-  # ## SSL Support
-  #
-  # To get SSL working, you will need to add the `https` key
-  # to your endpoint configuration:
-  #
-  #     config :framework, FrameworkWeb.Endpoint,
-  #       https: [
-  #         ...,
-  #         port: 443,
-  #         cipher_suite: :strong,
-  #         keyfile: System.get_env("SOME_APP_SSL_KEY_PATH"),
-  #         certfile: System.get_env("SOME_APP_SSL_CERT_PATH")
-  #       ]
-  #
-  # The `cipher_suite` is set to `:strong` to support only the
-  # latest and more secure SSL ciphers. This means old browsers
-  # and clients may not be supported. You can set it to
-  # `:compatible` for wider support.
-  #
-  # `:keyfile` and `:certfile` expect an absolute path to the key
-  # and cert in disk or a relative path inside priv, for example
-  # "priv/ssl/server.key". For all supported SSL configuration
-  # options, see https://hexdocs.pm/plug/Plug.SSL.html#configure/1
-  #
-  # We also recommend setting `force_ssl` in your config/prod.exs,
-  # ensuring no data is ever sent via http, always redirecting to https:
-  #
-  #     config :framework, FrameworkWeb.Endpoint,
-  #       force_ssl: [hsts: true]
-  #
-  # Check `Plug.SSL` for all available options in `force_ssl`.
+  # S3 / Waffle (product photo uploads)
+  if System.get_env("AWS_ACCESS_KEY_ID") do
+    config :ex_aws,
+           json_codec: Jason,
+           access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),
+           secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY"),
+           region: System.get_env("AWS_REGION") || "us-east-1",
+           s3: [
+             scheme: System.get_env("AWS_S3_SCHEME") || "https://",
+             host: System.get_env("AWS_S3_HOST") || "s3.amazonaws.com",
+             region: System.get_env("AWS_REGION") || "us-east-1"
+           ]
 
-  # ## Configuring the mailer
-  #
-  # In production you need to configure the mailer to use a different adapter.
-  # Also, you may need to configure the Swoosh API client of your choice if you
-  # are not using SMTP. Here is an example of the configuration:
-  #
-  #     config :framework, Framework.Mailer,
-  #       adapter: Swoosh.Adapters.Mailgun,
-  #       api_key: System.get_env("MAILGUN_API_KEY"),
-  #       domain: System.get_env("MAILGUN_DOMAIN")
-  #
-  # For this example you need include a HTTP client required by Swoosh API client.
-  # Swoosh supports Hackney and Finch out of the box:
-  #
-  #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
-  #
-  # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+    config :waffle,
+           storage: Waffle.Storage.S3,
+           bucket: System.get_env("AWS_S3_BUCKET"),
+           asset_host: System.get_env("AWS_ASSET_HOST")
+  end
+
+  config :sentry,
+         dsn: System.get_env("SENTRY_DSN") || nil
+
+  email_provider = System.get_env("EMAIL_PROVIDER")
+
+  cond do
+    email_provider in ~w(sendgrid postmark brevo) ->
+      adapter =
+        case email_provider do
+          "sendgrid" -> Swoosh.Adapters.SendGrid
+          "postmark" -> Swoosh.Adapters.Postmark
+          "brevo" -> Swoosh.Adapters.Brevo
+        end
+
+      config :framework, Framework.Mailer,
+             adapter: adapter,
+             api_key: System.get_env("EMAIL_API_KEY")
+
+      config :swoosh, :api_client, Finch
+      config :swoosh, :finch_name, Framework.Finch
+
+    email_provider == "mailgun" ->
+      config :craftplan, Framework.Mailer,
+             adapter: Swoosh.Adapters.Mailgun,
+             api_key: System.get_env("EMAIL_API_KEY"),
+             domain: System.get_env("EMAIL_API_DOMAIN")
+
+      config :swoosh, :api_client, Finch
+      config :swoosh, :finch_name, Framework.Finch
+
+    email_provider == "amazon_ses" ->
+      config :craftplan, Framework.Mailer,
+             adapter: Swoosh.Adapters.AmazonSES,
+             access_key: System.get_env("EMAIL_API_KEY"),
+             secret: System.get_env("EMAIL_API_SECRET"),
+             region: System.get_env("EMAIL_API_REGION") || "us-east-1"
+
+      config :swoosh, :api_client, Finch
+      config :swoosh, :finch_name, Craftplan.Finch
+
+    System.get_env("SMTP_HOST") != nil ->
+      config :craftplan, Framework.Mailer,
+             adapter: Swoosh.Adapters.SMTP,
+             relay: System.get_env("SMTP_HOST"),
+             port: String.to_integer(System.get_env("SMTP_PORT") || "587"),
+             username: System.get_env("SMTP_USERNAME"),
+             password: System.get_env("SMTP_PASSWORD"),
+             tls: :always,
+             auth: :always
+
+      config :swoosh, :api_client, Finch
+      config :swoosh, :finch_name, Framework.Finch
+
+    true ->
+      # No email provider configured — use Logger adapter so emails are
+      # logged instead of crashing (Local adapter's memory store is
+      # disabled in prod).
+      config :craftplan, Framework.Mailer, adapter: Swoosh.Adapters.Logger
+  end
 end

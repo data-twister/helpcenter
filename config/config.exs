@@ -22,7 +22,11 @@ config :ash,
   include_embedded_source_by_default?: false,
   show_keysets_for_all_actions?: false,
   default_page_type: :keyset,
-  policies: [no_filter_static_forbidden_reads?: false]
+  policies: [no_filter_static_forbidden_reads?: false],
+  known_types: [AshMoney.Types.Money],
+  custom_types: [
+    money: Money
+  ]
 
 config :spark,
   formatter: [
@@ -105,6 +109,27 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :ex_cldr, default_backend: Framework.Cldr
+
+config :elixir, :time_zone_database, Tz.TimeZoneDatabase
+
+config :sentry,
+  dsn: "https://examplePublicKey@o0.ingest.sentry.io/0",
+  environment_name: Mix.env(),
+  enable_source_code_context: true,
+  root_source_code_paths: [File.cwd!()],
+  integrations: [
+    oban: [
+      # Capture errors:
+      capture_errors: true,
+      # Monitor cron jobs:
+      cron: [enabled: true]
+    ],
+    telemetry: [
+      report_handler_failures: true
+    ]
+  ]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
