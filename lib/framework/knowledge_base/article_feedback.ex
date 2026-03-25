@@ -19,6 +19,7 @@ defmodule Framework.KnowledgeBase.ArticleFeedback do
 
   changes do
     change Framework.Changes.SetTenant
+    change Framework.Changes.InvalidateCache
   end
 
   multitenancy do

@@ -14,6 +14,8 @@ defmodule FrameworkWeb.Router do
     plug :put_secure_browser_headers
     plug :load_from_session
     plug FrameworkWeb.Plugs.SetTenant
+    # plug FrameworkWeb.Plugs.RateLimit
+    # plug FrameworkWeb.Plugs.EdgeCache
   end
 
   pipeline :api do
@@ -106,6 +108,9 @@ defmodule FrameworkWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    ## this we want to be a list of the tenant frontend stuff like services, popular printables and popular artwork
+    get "/items", ItemController, :index
 
     get "/accounts/users/invitations/:tenant/:token/accept",
         TenantInvitationAcceptanceController,

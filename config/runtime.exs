@@ -66,6 +66,11 @@ if config_env() == :prod do
       ip: {0, 0, 0, 0, 0, 0, 0, 0},
       port: port
     ],
+    https: [
+      port: 443,
+      cipher_suite: :strong,
+      sni_fun: {FrameworkWeb.SNI, :cert_for_host, []}
+    ],
     check_origin: origin,
     secret_key_base: secret_key_base
 
@@ -152,4 +157,6 @@ if config_env() == :prod do
       # disabled in prod).
       config :framework, Framework.Mailer, adapter: Swoosh.Adapters.Logger
   end
+
+  config :framework, Framework.Certificates, cert_dir: "/etc/letsencrypt/live"
 end

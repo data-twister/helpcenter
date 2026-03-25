@@ -72,6 +72,7 @@ defmodule Framework.KnowledgeBase.Category do
     change Framework.Changes.Slugify
 
     change Framework.Changes.SetTenant
+    change Framework.Changes.InvalidateCache
   end
 
   multitenancy do

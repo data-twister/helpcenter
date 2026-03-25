@@ -7,6 +7,32 @@ defmodule Framework.Accounts.Tenant do
 
   # , extensions: [Framework.Extensions.AshHaikunator]
 
+  #  alias Framework.Accounts.{Tenant, TenantDomain}
+  #
+  #  def resolve(host) when is_binary(host) do
+  #    # 1. exact domain match (custom domains)
+  #    case TenantDomain
+  #         |> Ash.Query.filter(domain == ^host and verified == true)
+  #         |> Ash.read_one() do
+  #      {:ok, %{tenant: tenant}} ->
+  #        {:ok, tenant}
+  #
+  #      _ ->
+  #        # 2. fallback to subdomain
+  #        resolve_subdomain(host)
+  #    end
+  #  end
+  #
+  #  defp resolve_subdomain(host) do
+  #    case String.split(host, ".") do
+  #      [sub, _root, _tld] ->
+  #        Tenant.by_prefix(sub)
+  #
+  #      _ ->
+  #        {:error, :no_tenant}
+  #    end
+  #  end
+
   @doc """
   Tell ash to use domain as the tenant database prefix when we are using
   postgresql as the database, otherwise use the ID

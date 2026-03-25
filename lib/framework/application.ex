@@ -7,6 +7,8 @@ defmodule Framework.Application do
 
   @impl true
   def start(_type, _args) do
+    FrameworkWeb.Cache.init()
+
     children = [
       FrameworkWeb.Telemetry,
       Framework.Repo,
@@ -38,6 +40,14 @@ defmodule Framework.Application do
   def config_change(changed, _new, removed) do
     FrameworkWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  def setup_wildcard_cert do
+    Framework.Certificates.put_cert(
+      FrameworkWeb.Endpoint.url(),
+      "/etc/letsencrypt/live/#{FrameworkWeb.Endpoint.url()}/fullchain.pem",
+      "/etc/letsencrypt/live/#{FrameworkWeb.Endpoint.url()}/privkey.pem"
+    )
   end
 
   @app Mix.Project.config()[:app]

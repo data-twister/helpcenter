@@ -24,6 +24,7 @@ defmodule Framework.KnowledgeBase.Comment do
 
   changes do
     change Framework.Changes.SetTenant
+    change Framework.Changes.InvalidateCache
   end
 
   multitenancy do

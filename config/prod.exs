@@ -27,5 +27,18 @@ config :swoosh, local: false
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :framework, Oban,
+  engine: Oban.Engines.Basic,
+  notifier: Oban.Notifiers.Postgres,
+  queues: [default: 10, system: 50],
+  repo: Framework.Repo,
+  plugins: [
+    {Oban.Plugins.Cron,
+     crontab: [
+       {"0 23 * * *", Framework.Workers.CacheCleaner, queue: :system},
+       {"0 23 * * 1", Framework.Workers.WeeklyCleanup, queue: :system}
+     ]}
+  ]
+
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.

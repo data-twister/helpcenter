@@ -4,16 +4,19 @@ defmodule FrameworkWeb.PageController do
   use FrameworkWeb, :controller
 
   def home(conn, _params) do
-    # TODO: load the default tenant
+    tenant = conn.assigns[:tenant]
 
-    # Retrieve categories with the articles
-    categories =
-      if tenant = Ash.read_first!(Framework.Accounts.Tenant) do
-        Ash.read!(Category, load: :article_count, tenant: tenant.prefix, authorize?: false)
-      else
-        []
+    key =
+      case tenant do
+        nil -> conn.request_path
+        t -> "#{t.id}:#{conn.request_path}"
       end
 
+    #    categories = FrameworkWeb.Cache.get_or_fetch(key, fn ->
+    #        Ash.read!(Category, tenant: tenant)
+    #      end)
+
+    categories = []
     # The home page is often custom made,
     # so skip the default app layout.
     render(conn, :home, layout: false, categories: categories)

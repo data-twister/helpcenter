@@ -90,6 +90,7 @@ defmodule Framework.KnowledgeBase.Article do
   changes do
     change Framework.Changes.Slugify
     change Framework.Changes.SetTenant
+    change Framework.Changes.InvalidateCache
   end
 
   multitenancy do
