@@ -10,6 +10,7 @@ defmodule FrameworkWeb.Accounts.Users.UsersLive do
     <%!-- User list --%>
     <Cinder.Table.table query={get_query(@current_user)} page_size={10} id="users-table">
       <:col :let={row} label="Email" field="email" filter sort>{row.email}</:col>
+      <:col :let={row} label="Domain"></:col>
       <:col :let={row} label="Tenant">{Phoenix.Naming.humanize(row.current_tenant)}</:col>
     </Cinder.Table.table>
     """

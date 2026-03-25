@@ -12,8 +12,8 @@ defmodule FrameworkWeb.Endpoint do
   ]
 
   socket "/live", Phoenix.LiveView.Socket,
-    websocket: [connect_info: [session: {__MODULE__, :session_opts, []}]],
-    longpoll: [connect_info: [session: {__MODULE__, :session_opts, []}]]
+    websocket: [connect_info: [:uri, :x_headers, :peer_data, session: @session_options]],
+    longpoll: [connect_info: [:uri, :x_headers, :peer_data, session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -50,21 +50,10 @@ defmodule FrameworkWeb.Endpoint do
   plug Sentry.PlugContext
   plug Plug.MethodOverride
   plug Plug.Head
-  plug :session
-  plug :health
-  plug :version
-  # plug Plug.Session, @session_options
+  #  plug :health
+  #  plug :version
+  plug Plug.Session, @session_options
   plug FrameworkWeb.Router
-
-  def session(conn, _opts) do
-    opts = session_opts()
-
-    Plug.Session.call(conn, Plug.Session.init(opts))
-  end
-
-  def session_opts do
-    Keyword.put(@session_options, :domain, FrameworkWeb.Endpoint.host())
-  end
 
   def health(conn, _) do
     case conn do

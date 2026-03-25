@@ -4,8 +4,11 @@ defmodule Framework.Accounts do
 
   resources do
     resource Framework.Accounts.Tenant do
-      define :add_domain, action: :add_domain
       define :list_origins, action: :list_origins
+    end
+
+    resource Framework.Accounts.ApiKey do
+      define :revoke_api_key, action: :revoke
     end
 
     resource Framework.Accounts.User

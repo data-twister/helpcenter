@@ -50,13 +50,6 @@ defmodule Framework.Accounts.Tenant do
       change Framework.Accounts.Tenant.Changes.SetOwnerCurrentTenantAfterCreate
     end
 
-    update :add_domain do
-      description "add the domain url"
-      accept [:domain]
-
-      #  change Framework.Accounts.Tenant.Changes.Domain
-    end
-
     read :by_domain do
       description "This action is used to read a tenant by its domain"
       filter expr(domain == ^arg(:domain))

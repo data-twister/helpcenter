@@ -20,7 +20,7 @@ defmodule Framework.Domains.Domain do
 
     create :create do
       primary? true
-      accept [:tenant_id]
+      accept [:host, :tenant_id, :auth_code]
 
       change Framework.Domains.Changes.DomainCheck
     end
@@ -68,11 +68,16 @@ defmodule Framework.Domains.Domain do
       allow_nil? false
     end
 
+    attribute :attempts, :integer do
+      description "Auth Attempts"
+      default 0
+    end
+
     timestamps()
   end
 
   relationships do
-    belongs_to :tenant, Tenant do
+    belongs_to :tenant, Framework.Accounts.Tenant do
       allow_nil? true
     end
   end

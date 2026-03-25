@@ -24,7 +24,7 @@ defmodule FrameworkWeb.Origin do
           authorize?: false
         )
 
-        Ash.update!(domain, %{status: "success"},
+        Ash.update!(domain, %{attempts: domain.attempts + 1, status: "success"},
           action: :update,
           authorize?: false
         )
@@ -39,7 +39,7 @@ defmodule FrameworkWeb.Origin do
           authorize?: false
         )
 
-        Ash.update!(domain, %{status: "failed"},
+        Ash.update!(domain, %{attempts: domain.attempts + 1, status: "failed"},
           action: :update,
           authorize?: false
         )
@@ -51,8 +51,12 @@ defmodule FrameworkWeb.Origin do
     end
   end
 
-  def verify_origin?(%URI{} = uri) do
-    uri.host in origins()
+  def verify_origin?(false) do
+    false
+  end
+
+  def verify_origin?(_) do
+    origins()
   end
 
   defmemop origins(), expires_in: 60 * 1000 do

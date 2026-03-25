@@ -215,11 +215,11 @@ defmodule Framework.Orders.OrderItem do
       allow_nil? false
     end
 
-    belongs_to :item, Project.Item do
+    belongs_to :item, Framework.Project.Item do
       allow_nil? false
     end
 
-    belongs_to :bom, Project.BOM do
+    belongs_to :bom, Framework.Project.BOM do
       allow_nil? true
     end
 

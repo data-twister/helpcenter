@@ -10,6 +10,8 @@ defmodule Framework.Orders.ProductionBatch do
   import Ash.Expr
 
   alias Framework.Orders.Changes.BatchOpenInit
+  alias Framework.Project.BOM
+  alias Framework.Project.Item
 
   require Ash.Query
 
@@ -245,11 +247,11 @@ defmodule Framework.Orders.ProductionBatch do
   end
 
   relationships do
-    belongs_to :item, Project.Item do
+    belongs_to :item, Item do
       allow_nil? false
     end
 
-    belongs_to :bom, Project.BOM do
+    belongs_to :bom, BOM do
       allow_nil? true
     end
 

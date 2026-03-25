@@ -300,6 +300,12 @@ defmodule Framework.Accounts.User do
     end
   end
 
+  #  calculations do
+  #    calculate :tenant_data, :map, Framework.Accounts.User.Calculations.TenantData do
+  #      description "Get the data for the tenant."
+  #    end
+  #  end
+
   relationships do
     many_to_many :tenants, Framework.Accounts.Tenant do
       through Framework.Accounts.UserTenant
@@ -313,6 +319,14 @@ defmodule Framework.Accounts.User do
       destination_attribute_on_join_resource :group_id
     end
   end
+
+  #  multitenancy do
+  #    strategy :attribute
+  #  end
+  #
+  #  changes do
+  #    change Framework.Changes.SetTenant
+  #  end
 
   identities do
     identity :unique_email, [:email]

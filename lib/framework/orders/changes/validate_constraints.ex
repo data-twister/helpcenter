@@ -159,7 +159,7 @@ defmodule Framework.Orders.Changes.ValidateConstraints do
 
       # Load item caps in one go
       items =
-        Project.Item
+        Framework.Project.Item
         |> Ash.Query.filter(id in ^item_ids)
         |> Ash.read!()
         |> Map.new(&{&1.id, &1})

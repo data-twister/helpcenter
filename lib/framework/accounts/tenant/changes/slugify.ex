@@ -8,7 +8,7 @@ defmodule Framework.Accounts.Tenant.Changes.Slugify do
     Ash.Changeset.force_change_attribute(
       changeset,
       :prefix,
-      String.downcase(Haikunator.build(Faker.Dog.PtBr.name(), "_"))
+      String.downcase(Haikuify.build(Faker.Dog.PtBr.name(), "_"))
     )
   end
 end

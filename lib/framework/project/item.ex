@@ -8,6 +8,7 @@ defmodule Framework.Project.Item do
     extensions: [AshJsonApi.Resource, AshGraphql.Resource]
 
   alias Framework.Project.BOM
+  alias Framework.Project.Item
 
   postgres do
     table "project_items"

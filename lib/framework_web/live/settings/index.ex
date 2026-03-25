@@ -74,12 +74,10 @@ defmodule FrameworkWeb.SettingsLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     settings = Settings.get_by_id!(socket.assigns.settings.id)
-    tenants = []
 
     socket =
       socket
       |> assign(:settings, settings)
-      |> assign(:tenants, tenants)
       |> assign(:show_mapping_modal, false)
       |> assign(:selected_entity, nil)
       |> assign_new(:current_user, fn -> nil end)

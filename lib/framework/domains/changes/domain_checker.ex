@@ -8,8 +8,9 @@ defmodule Framework.Domains.Changes.DomainCheck do
   defp run(_changeset, domain) do
     Framework.Workers.Domain.Verification.enqueue(%{
       domain: domain.host,
-      code: Haikuify.build(),
-      start_at: 60
+      code: domain.auth_code,
+      schedule_in: {35, :minutes},
+      max_attempts: 15
     })
 
     {:ok, domain}

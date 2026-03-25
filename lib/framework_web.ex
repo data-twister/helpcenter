@@ -167,6 +167,26 @@ defmodule FrameworkWeb do
     end
   end
 
+  def live_session_with_domain(name, opts \\ [], do: block) do
+    ash_on_mount = List.wrap(Keyword.get(opts, :on_mount, []))
+
+    # Ensure OUR hooks run first
+    combined_on_mount =
+      [
+        FrameworkWeb.DomainOnMount,
+        FrameworkWeb.TenantOnMount,
+        FrameworkWeb.AshTenantOnMount
+      ] ++ ash_on_mount
+
+    opts = Keyword.put(opts, :on_mount, combined_on_mount)
+
+    quote do
+      ash_authentication_live_session unquote(name), unquote(opts) do
+        unquote(block)
+      end
+    end
+  end
+
   @doc """
   When used, dispatch to the appropriate controller/live_view/etc.
   """

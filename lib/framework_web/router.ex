@@ -13,6 +13,7 @@ defmodule FrameworkWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :load_from_session
+    plug FrameworkWeb.Plugs.SetTenant
   end
 
   pipeline :api do
@@ -29,8 +30,16 @@ defmodule FrameworkWeb.Router do
   scope "/", FrameworkWeb do
     pipe_through :browser
 
+    #    FrameworkWeb.live_session_with_domain :authenticated_routes,
+    #      on_mount: [
+    #       {FrameworkWeb.LiveUserAuth, :live_user_required},
+    #    {FrameworkWeb.DomainOnMount, :default}
+    #      ] do
     ash_authentication_live_session :authenticated_routes,
-      on_mount: {FrameworkWeb.LiveUserAuth, :live_user_required} do
+      on_mount: [
+        {FrameworkWeb.LiveUserAuth, :live_user_required},
+        {FrameworkWeb.DomainOnMount, :default}
+      ] do
       # in each liveview, add one of the following at the top of the module:
       #
       # If an authenticated user must be present:
