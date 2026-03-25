@@ -38,7 +38,7 @@ defmodule Framework.MixProject do
   def application do
     [
       mod: {Framework.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :observer, :wx, :debugger]
     ]
   end
 
@@ -116,7 +116,10 @@ defmodule Framework.MixProject do
       {:cors_plug, "~> 3.0"},
       {:memoize, "~> 1.4"},
       {:oban_live_dashboard, "~> 0.2.1"},
-      {:ash_haikuify, github: "mithereal/ash_haikuify"}
+      {:ash_haikuify, github: "mithereal/ash_haikuify"},
+      {:altcha, "~> 0.2"},
+      {:phoenix_copy, ">= 0.0.0"},
+      {:bun, "~> 1.3", runtime: Mix.env() == :dev}
     ]
   end
 
@@ -132,12 +135,18 @@ defmodule Framework.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ash.setup --quiet", "test"],
-      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind framework", "esbuild framework"],
+      "assets.setup": [
+        "bun.install --if-missing",
+        "bun install",
+        "tailwind.install --if-missing",
+        "esbuild.install --if-missing"
+      ],
+      "assets.build": ["bun default", "tailwind framework", "esbuild framework"],
       "assets.deploy": [
         "tailwind framework --minify",
         "esbuild framework --minify",
-        "phx.digest"
+        "phx.digest",
+        "bun default --minify"
       ],
       "phx.routes": ["phx.routes", "ash_authentication.phoenix.routes"]
     ]
@@ -145,7 +154,7 @@ defmodule Framework.MixProject do
 
   defp releases do
     [
-      craftplan: [
+      framework: [
         steps: [:assemble, :tar]
       ]
     ]

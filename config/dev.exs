@@ -26,11 +26,15 @@ config :framework, FrameworkWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "3NAos5punonJYbJepPjFoXigvBPwJcBEu+5WBt3O1E3pLegeVRBGiJAJAIko6LGM",
   watchers: [
+    asset_copy_css: {Phoenix.Copy, :watch, [:css]},
+    asset_copy_images: {Phoenix.Copy, :watch, [:images]},
+    asset_copy_js: {Phoenix.Copy, :watch, [:js]},
+    asset_copy_fonts: {Phoenix.Copy, :watch, [:fonts]},
     esbuild: {Esbuild, :install_and_run, [:framework, ~w(--sourcemap=inline --watch)]},
     esbuild: {Esbuild, :install_and_run, [:user, ~w(--sourcemap=inline --watch)]},
-    esbuild: {Esbuild, :install_and_run, [:service_worker, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:framework, ~w(--watch)]},
-    tailwind_user: {Tailwind, :install_and_run, [:user, ~w(--watch)]}
+    tailwind_user: {Tailwind, :install_and_run, [:user, ~w(--watch)]},
+    service_worker: {Bun, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
 # ## SSL Support

@@ -39,3 +39,8 @@ npm-debug.log
 
 .elixir_ls/
 
+/priv/static/
+/priv/resource_snapshots/repo/
+/.minio/
+/.postgres/
+/framework.iml

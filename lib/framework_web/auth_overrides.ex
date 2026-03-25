@@ -18,3 +18,9 @@ defmodule FrameworkWeb.AuthOverrides do
   #  set :show_banner, false
   # end
 end
+
+## todo add
+
+#<div class="flex justify-center">
+#<altcha-widget hidefooter challengeurl="altcha"></altcha-widget>
+#</div>

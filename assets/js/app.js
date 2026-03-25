@@ -19,6 +19,7 @@
 import "phoenix_html"
 // Establish Phoenix Socket and LiveView configuration.
 import {Socket} from "phoenix"
+import 'altcha'
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
@@ -47,4 +48,17 @@ liveSocket.connect()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
+
+if ("serviceWorker" in navigator) {
+  // Register a service worker hosted at the root of the
+  // site using the default scope.
+  navigator.serviceWorker
+    .register("/assets/serviceworker.js", { scope: "/" })
+    .then(
+      (_registration) => console.log("Service worker registration succeeded."),
+      (error) => console.error(`Service worker registration failed: ${error}`),
+    );
+} else {
+  console.error("Service workers are not supported.");
+}
 

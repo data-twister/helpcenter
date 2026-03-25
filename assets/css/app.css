@@ -3,3 +3,195 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+:root {
+  --altcha-border-width: 1px;
+  --altcha-border-radius: 5px;
+  --altcha-color-base: #ffffff;
+  --altcha-color-border: #a0a0a0;
+  --altcha-color-text: currentColor;
+  --altcha-color-border-focus: currentColor;
+  --altcha-color-error-text: #f23939;
+  --altcha-color-footer-bg: #f4f4f4;
+  --altcha-max-width: 260px;
+}
+
+span.email b {
+  display: none;
+}
+
+.rubik {
+  font-family: "Rubik Dirt", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poiret-one-regular {
+  font-family: "Poiret One", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* HTML: <div class="ribbon">Your text content</div> */
+
+.ribbon {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+  display: none;
+  --f: .5em;
+  /* control the folded part */
+  position: absolute;
+  top: 0;
+  right: 0;
+  line-height: 1.8;
+  padding-inline: 1lh;
+  padding-bottom: var(--f);
+  -o-border-image: conic-gradient(#0008 0 0) 51%/var(--f);
+     border-image: conic-gradient(#0008 0 0) 51%/var(--f);
+  -webkit-clip-path: polygon(
+    100% calc(100% - var(--f)),100% 100%,calc(100% - var(--f)) calc(100% - var(--f)),var(--f) calc(100% - var(--f)), 0 100%,0 calc(100% - var(--f)),999px calc(100% - var(--f) - 999px),calc(100% - 999px) calc(100% - var(--f) - 999px));
+          clip-path: polygon(
+    100% calc(100% - var(--f)),100% 100%,calc(100% - var(--f)) calc(100% - var(--f)),var(--f) calc(100% - var(--f)), 0 100%,0 calc(100% - var(--f)),999px calc(100% - var(--f) - 999px),calc(100% - 999px) calc(100% - var(--f) - 999px));
+  transform: translate(calc((1 - cos(45deg))*100%), -100%) rotate(45deg);
+  transform-origin: 0% 100%;
+  background-color: #BD1550;
+  /* the main color  */
+}
+
+.shojumaru-regular {
+  font-family: "Shojumaru", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.puppies-play-regular {
+  font-size: 28px;
+  font-family: "Puppies Play", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.halftone {
+  --mask: linear-gradient(rgb(0 0 0), rgb(0 0 0 / 0.5));
+  --stop1: 0.06rem;
+  --stop2: 0.65rem;
+  --invert: 0;
+  --dotColor: white;
+  --bgColor: grey;
+  --dottedBackground: radial-gradient(circle at center, var(--dotColor) var(--stop1), transparent var(--stop2));
+  position: relative;
+  background: var(--bgColor);
+  mix-blend-mode: multiply;
+  isolation: isolate;
+  border: 4px solid var(--borderColor, var(--dotColor));
+}
+
+.halftone::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--dottedBackground);
+  background-size: var(--bgSize, 1rem) var(--bgSize, 1rem);
+  background-repeat: round;
+  background-position: 0 0, var(--bgPosition) var(--bgPosition);
+  -webkit-mask-image: var(--mask);
+          mask-image: var(--mask);
+}
+
+.halftone:nth-child(even) {
+  --bgSize: 1.4rem;
+  --bgPosition: calc(var(--bgSize) / 2);
+  --dottedBackground: radial-gradient(circle at center, var(--dotColor) var(--stop1), transparent var(--stop2)), radial-gradient(circle at center, var(--dotColor) var(--stop1), transparent var(--stop2));
+}
+
+.halftone:nth-child(3),
+.halftone:nth-child(4) {
+  --borderColor: white;
+  --invert: 1;
+}
+
+.halftone:nth-child(5),
+.halftone:nth-child(6) {
+  --invert: 1;
+  mix-blend-mode: screen;
+}
+
+.halftone:nth-child(7),
+.halftone:nth-child(8) {
+  --borderColor: white;
+  mix-blend-mode: screen;
+}
+
+#map{
+  height: 180px;
+}
+
+.place-card-large{
+  display: none;
+}
+
+/* DropsWeb upload stuff */
+
+details {
+  margin: 1rem 0 2rem;
+}
+
+details:not([open]) summary::after {
+  content: " (click to expand)";
+}
+
+.upload-demo {
+  margin-bottom: 2rem;
+}
+
+.upload-entry {
+  border-bottom: 1px dashed #ccc;
+  padding: 0.87rem 0;
+}
+
+.upload-entry__progress {
+  height: 0.87rem;
+  width: 100%;
+  min-width: 100%;
+}
+
+.upload-entry__details {
+  display: flex;
+  padding-bottom: 1rem;
+}
+
+.upload-entry__details figure {
+  display: flex;
+  flex-basis: 100%;
+  margin: 1rem 1.5rem 0 0;
+}
+
+.upload-entry__details figure img {
+  width: 96px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  align-self: flex-start;
+  padding-right: 0.87rem;
+}
+
+.upload-entry__details figure figcaption {
+  flex: 1 1 auto;
+  align-self: center;
+}
+
+output>figure img {
+  margin: 1rem 1.5rem 0 0;
+}
+
+output>figure figcaption {
+  font-family: monospace;
+  font-size: smaller;
+}
+
+.upload-component>.preview img {
+  margin: 1rem;
+}
+
+.avatar>img {
+  margin: 1rem 1.5rem 0 0;
+}

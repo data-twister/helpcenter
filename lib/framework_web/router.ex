@@ -108,6 +108,8 @@ defmodule FrameworkWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/altcha", AuthController, :altcha
+
 
     ## this we want to be a list of the tenant frontend stuff like services, popular printables and popular artwork
     get "/items", ItemController, :index

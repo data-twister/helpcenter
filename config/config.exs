@@ -103,11 +103,17 @@ config :esbuild,
       ~w(js/user.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
-  ],
-  service_worker: [
-    args: ~w(js/service_worker.js --bundle --target=es2016 --outdir=../priv/static/assets),
+  ]
+
+config :bun,
+  version: "1.1.42",
+  install: [args: ~w(install), cd: Path.expand("../assets", __DIR__), env: %{}],
+  default: [
+    args:
+      ~w(build js/service_worker.js) ++
+        ~w(--outdir=../priv/static/assets --external /fonts/* --external /images/*),
     cd: Path.expand("../assets", __DIR__),
-    env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
+    env: %{}
   ]
 
 # Configure tailwind (the version is required)
@@ -157,6 +163,24 @@ config :sentry,
     telemetry: [
       report_handler_failures: true
     ]
+  ]
+
+config :phoenix_copy,
+  css: [
+    source: Path.expand("../assets/static/css/", __DIR__),
+    destination: Path.expand("../priv/static/assets/", __DIR__)
+  ],
+  images: [
+    source: Path.expand("../assets/static/images/", __DIR__),
+    destination: Path.expand("../priv/static/images/", __DIR__)
+  ],
+  js: [
+    source: Path.expand("../assets/static/js/", __DIR__),
+    destination: Path.expand("../priv/static/assets/", __DIR__)
+  ],
+  fonts: [
+    source: Path.expand("../assets/static/fonts/", __DIR__),
+    destination: Path.expand("../priv/static/fonts/", __DIR__)
   ]
 
 # Import environment specific config. This must remain at the bottom

@@ -52,4 +52,23 @@ defmodule FrameworkWeb.AuthController do
     |> put_flash(:info, "You are now signed out")
     |> redirect(to: return_to)
   end
+
+
+  alias Altcha.{ChallengeOptions}
+  @altcha_hmac_key System.get_env("ALTCHA_HMAC_KEY") || "default-hmac-key"
+
+  def altcha(conn, _params) do
+    options = %ChallengeOptions{
+      algorithm: :sha256,
+      expires: DateTime.to_unix(DateTime.utc_now(), :second) + 600,
+      hmac_key: @altcha_hmac_key,
+      max_number: 50_000
+    }
+
+    challenge = Altcha.create_challenge(options)
+
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(200, Jason.encode!(challenge))
+  end
 end

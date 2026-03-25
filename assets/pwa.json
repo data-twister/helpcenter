@@ -1,0 +1,16 @@
+{
+  "name": "Websockets Client",
+  "short_name": "Websockets",
+  "start_url": "/page/pwa",
+  "display": "standalone",
+  "background_color": "#5900b3",
+  "theme_color": "black",
+  "scope": "/page/pwa",
+  "description": "Websockets Client PWA",
+  "icons": [{
+    "src": "/images/websockets_192.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  }
+  ]
+}
