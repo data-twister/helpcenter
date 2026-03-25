@@ -1,4 +1,4 @@
-// Invoice — Craftplan
+// Invoice —
 // Data is passed via sys.inputs.elixir_data
 
 #let data = sys.inputs.elixir_data

@@ -1,4 +1,4 @@
-// Production Batch Sheet — Craftplan
+// Production Batch Sheet —
 // Data is passed via sys.inputs.elixir_data
 
 #let data = sys.inputs.elixir_data
